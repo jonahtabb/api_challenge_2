@@ -1,0 +1,25 @@
+.visual-bar-container{
+    width : 100%;
+    height: 30px;
+    background-color: rgba(255, 255, 255, 0);
+    border: 2px solid rgba(133, 133, 231, 0.876);
+    border-radius: 20px;
+}
+
+.visual-bar-inside{
+    border-radius: 20px 0px 0px 20px;
+    width: 71%;
+    height: 100%;
+}
+
+.visual-bar-aqi{
+    background-color: rgba(0, 255, 255, 0.315);
+}
+
+.visual-bar-temp{
+    background-color: rgba(0, 255, 255, 0.315);
+}
+
+.visual-bar-humidity{
+    background-color: rgba(0, 255, 255, 0.315);
+}
