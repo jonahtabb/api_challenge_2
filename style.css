@@ -8,7 +8,6 @@
 
 .visual-bar-inside{
     border-radius: 20px 0px 0px 20px;
-    width: 71%;
     height: 100%;
 }
 
@@ -17,7 +16,8 @@
 }
 
 .visual-bar-temp{
-    background-color: rgba(0, 255, 255, 0.315);
+    background-color: rgba(225, 0, 255, 0.76);
+    height: 100%
 }
 
 .visual-bar-humidity{

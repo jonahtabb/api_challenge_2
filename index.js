@@ -21,17 +21,36 @@ async function getNearestCityData () {
     console.log("getNearestCityData Function Has Started");
     let nearestCityData = await fetch(baseURL+NearestCityDataSlug+apiKey);
     nearestCityData = await nearestCityData.json();
-    // console.log(data);
+    console.log(nearestCityData);
     createVisualBar(nearestCityData);
     // console.log(nearestCityData.data.current.pollution.aqius);
 }
 
 function createVisualBar(n){
+
+    //Create the outer card for the city
+    let cityCard = document.createElement('div');
+    cityCard.className = "card p-3";
+
+    //Create City Title
+    let cityTitle = document.createElement('h2');
+    cityTitle.innerText = `${n.data.city}, ${n.data.state}`;
+
+    //Create Air Quality Index Title
+    let aqiTitle = document.createElement('h3');
+    aqiTitle.innerText = `Air Quality Index: ${n.data.current.pollution.aqius}`;
+
     //Convert aqi to percent of 300
     let aqi = n.data.current.pollution.aqius;
     // let aqi = 51; // for testing, comment out the above line and use this number
     let aqiPercent = Math.floor((aqi/300) * 100);
     let aqiPercentString = `${aqiPercent}%`;
+
+    //Convert the temp to F
+    let tempFar = ((n.data.current.weather.tp) * (9/5)) + 32 ;
+    let tempFarString = Math.floor(tempFar.toString());
+    let tempFarPercentString= `${tempFar}%`
+    console.log(tempFarPercentString);
    
     //Set Bar color
     let barColorAqi = "rgba(255, 255, 255, 0)"
@@ -40,24 +59,43 @@ function createVisualBar(n){
         
     console.log(aqiPercentString);
 
-    //Create the outer card for the city
-    let cityCard = document.createElement('div');
-    cityCard.className = "card p-3";
-
     //Create the aqi bar container
-    let cityCardBarContainerAqi = document.createElement('div');
-    cityCardBarContainerAqi.className = "visual-bar-container";
+    let barContainerAqi = document.createElement('div');
+    barContainerAqi.className = "visual-bar-container";
     
-    //Create the inner bar
-    let cityBarInnerAqi = document.createElement('div');
-    cityBarInnerAqi.className = "visual-bar-inside visual-bar-aqi";
-    cityBarInnerAqi.style.width = aqiPercentString;
-    cityBarInnerAqi.style.backgroundColor = barColorAqi;
+    //Create the aqi inner bar
+    let barInnerAqi = document.createElement('div');
+    barInnerAqi.className = "visual-bar-inside visual-bar-aqi";
+    barInnerAqi.style.width = aqiPercentString;
+    barInnerAqi.style.backgroundColor = barColorAqi;
 
+    //Create Temperature Title
+    let tempTitle = document.createElement('h3');
+    tempTitle.innerText = `Temp (F): ${tempFarString} deg`;
+
+    //Create the temp bar container
+    let barContainerTemp = document.createElement('div');
+    barContainerTemp.className = "visual-bar-container";
+
+    //Create the temp bar inner container
+    let barInnerTemp = document.createElement('div');
+    barInnerTemp.className = "visual-bar-inside visual-bar-temp";
+    barInnerTemp.style.width = tempFarPercentString;
+
+    //Append Elements
 
     mainCardsContainer.appendChild(cityCard);
-    cityCard.appendChild(cityCardBarContainerAqi);
-    cityCardBarContainerAqi.appendChild(cityBarInnerAqi);
+    cityCard.appendChild(cityTitle);
+
+    cityCard.appendChild(aqiTitle);
+    cityCard.appendChild(barContainerAqi);
+    barContainerAqi.appendChild(barInnerAqi);
+
+    cityCard.appendChild(tempTitle);
+    cityCard.appendChild(barContainerTemp);
+    barContainerTemp.appendChild(barInnerTemp);
+    console.log(barInnerTemp);
+    
 
 }
 
