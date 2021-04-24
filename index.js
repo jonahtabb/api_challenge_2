@@ -28,80 +28,128 @@ async function getNearestCityData () {
 
 function createVisualBar(n){
 
-    //Create the outer card for the city
-    let cityCard = document.createElement('div');
-    cityCard.className = "card p-3";
+        //Initialize data points array
+        let weatherDataArray = [];
+        function weatherDataObject (abbrev, name, dataPoint, percentString) {
+            this.abbrev = abbrev;
+            this.name = name;
+            this.dataPoint = dataPoint;
+            this.percentString = percentString;
+        }
 
-    //Create City Title
-    let cityTitle = document.createElement('h2');
-    cityTitle.innerText = `${n.data.city}, ${n.data.state}`;
+        //Create the outer card for the city
+        let cityCard = document.createElement('div');
+        cityCard.className = "card p-3";
 
-    //Create Air Quality Index Title
-    let aqiTitle = document.createElement('h3');
-    aqiTitle.innerText = `Air Quality Index: ${n.data.current.pollution.aqius}`;
+        //Create City Title
+        let cityTitle = document.createElement('h2');
+        cityTitle.innerText = `${n.data.city}, ${n.data.state}`;
 
-    //Convert aqi to percent of 300
-    let aqi = n.data.current.pollution.aqius;
-    // let aqi = 51; // for testing, comment out the above line and use this number
-    let aqiPercent = Math.floor((aqi/300) * 100);
-    let aqiPercentString = `${aqiPercent}%`;
+        //Process AQI Data (Air Quality Index)
+        let aqi = n.data.current.pollution.aqius;
+        // let aqi = 51; // for testing, comment out the above line and use this number
+        let aqiPercent = Math.floor((aqi/300) * 100);
+        let aqiPercentString = `${aqiPercent}%`;
+        weatherDataArray.push(new weatherDataObject("aqi", "Air Quality Index", aqi, aqiPercentString));
 
-    //Convert the temp to F
-    let tempFar = ((n.data.current.weather.tp) * (9/5)) + 32 ;
-    let tempFarString = Math.floor(tempFar.toString());
-    let tempFarPercentString= `${tempFar}%`
-    console.log(tempFarPercentString);
+        //Process Temp Data
+        let tempFar = ((n.data.current.weather.tp) * (9/5)) + 32 ;
+        let tempFarString = Math.floor(tempFar.toString());
+        let tempFarPercentString= `${tempFar}%`
+        console.log(tempFarPercentString);
+
+        weatherDataArray.push(new weatherDataObject("temp", "Temperature (F)", tempFar, tempFarPercentString));
    
-    //Set Bar color
-    let barColorAqi = "rgba(255, 255, 255, 0)"
-    if (aqi < 51) {barColorAqi = "Green"}
-    else if (aqi < 101) {barColorAqi = "Yellow"}
+        console.log(weatherDataArray);
         
-    console.log(aqiPercentString);
+        //Iterate through data and create dom elements
 
-    //Create the aqi bar container
-    let barContainerAqi = document.createElement('div');
-    barContainerAqi.className = "visual-bar-container";
-    
-    //Create the aqi inner bar
-    let barInnerAqi = document.createElement('div');
-    barInnerAqi.className = "visual-bar-inside visual-bar-aqi";
-    barInnerAqi.style.width = aqiPercentString;
-    barInnerAqi.style.backgroundColor = barColorAqi;
+        weatherDataArray.forEach(weatherDataObject => {
+            //Create the data point Title
+            let Title = document.createElement('h3');
+            Title.innerText = `${weatherDataObject.name}: ${weatherDataObject.dataPoint}`;
+            console.log(Title);
 
-    //Create Temperature Title
-    let tempTitle = document.createElement('h3');
-    tempTitle.innerText = `Temp (F): ${tempFarString} deg`;
+            //Create the aqi bar container
+            let barContainer = document.createElement('div');
+            barContainer.className = "visual-bar-container";
 
-    //Create the temp bar container
-    let barContainerTemp = document.createElement('div');
-    barContainerTemp.className = "visual-bar-container";
+            //Set Inner Bar color
+            let barColor = "black"
+            console.log(weatherDataObject.dataPoint);
+            if (weatherDataObject.abbrev == "aqi") {
+                if (weatherDataObject.dataPoint < 51) {barColor = "Green"}
+                else if (weatherDataObject.dataPoint < 101) {barColor = "Yellow"}
+            }
+            else if (weatherDataObject.abbrev == "temp") {
+                barColor = "blue"
+            }
 
-    //Create the temp bar inner container
-    let barInnerTemp = document.createElement('div');
-    barInnerTemp.className = "visual-bar-inside visual-bar-temp";
-    barInnerTemp.style.width = tempFarPercentString;
+            //Create the inner bar
+            let barInner = document.createElement('div');
+            barInner.className = "visual-bar-inside";
+            barInner.style.width = weatherDataObject.percentString;
+            barInner.style.backgroundColor = barColor;
 
-    //Append Elements
+            mainCardsContainer.appendChild(cityCard);
+            cityCard.appendChild(Title);
 
-    mainCardsContainer.appendChild(cityCard);
-    cityCard.appendChild(cityTitle);
+            cityCard.appendChild(Title);
+            cityCard.appendChild(barContainer);
+            barContainer.appendChild(barInner);
 
-    cityCard.appendChild(aqiTitle);
-    cityCard.appendChild(barContainerAqi);
-    barContainerAqi.appendChild(barInnerAqi);
-
-    cityCard.appendChild(tempTitle);
-    cityCard.appendChild(barContainerTemp);
-    barContainerTemp.appendChild(barInnerTemp);
-    console.log(barInnerTemp);
-    
-
+        });
 }
 
 getNearestCityData()
 
 
+
+//Original code I built to staticly create teh elements:
+// //Set Bar color
+    // let barColorAqi = "rgba(255, 255, 255, 0)"
+    // if (aqi < 51) {barColorAqi = "Green"}
+    // else if (aqi < 101) {barColorAqi = "Yellow"}
+        
+    // //Create the aqi bar container
+    // let barContainerAqi = document.createElement('div');
+    // barContainerAqi.className = "visual-bar-container";
+    
+    // //Create the aqi inner bar
+    // let barInnerAqi = document.createElement('div');
+    // barInnerAqi.className = "visual-bar-inside visual-bar-aqi";
+    // barInnerAqi.style.width = aqiPercentString;
+    // barInnerAqi.style.backgroundColor = barColorAqi;
+
+    // //Create Temperature Title
+    // let tempTitle = document.createElement('h3');
+    // tempTitle.innerText = `Temp (F): ${tempFarString} deg`;
+
+    // //Create the temp bar container
+    // let barContainerTemp = document.createElement('div');
+    // barContainerTemp.className = "visual-bar-container";
+
+    // //Create the temp bar inner container
+    // let barInnerTemp = document.createElement('div');
+    // barInnerTemp.className = "visual-bar-inside visual-bar-temp";
+    // barInnerTemp.style.width = tempFarPercentString;
+
+    //Append Elements
+
+
+
+    // mainCardsContainer.appendChild(cityCard);
+    // cityCard.appendChild(cityTitle);
+
+
+    // cityCard.appendChild(aqiTitle);
+    // cityCard.appendChild(barContainerAqi);
+    // barContainerAqi.appendChild(barInnerAqi);
+
+    // cityCard.appendChild(tempTitle);
+    // cityCard.appendChild(barContainerTemp);
+    // barContainerTemp.appendChild(barInnerTemp);
+    // console.log(barInnerTemp);
 
 
 // async function getListOfPhotoCities (){

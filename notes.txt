@@ -1,3 +1,10 @@
 Search box the that populates with US city suggestions as you type.  Once you choose a city, you can get a visual display of various data points for that city.
 
 Datapoints:
+
+{
+    "abbrev": "temp",
+    "measurement": "Temperature (F)",
+    "dataPoint": 46.4,
+    "percentString": "46.4%"
+}
