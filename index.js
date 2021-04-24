@@ -1,11 +1,9 @@
-
+//Set Constants
 const baseURL = "http://api.airvisual.com/v2/"
 const apiKey = "a1d8a74d-2f39-4e75-a89f-70fa6578cbd9"
 const supportedCountriesSlug = "countries?key="
 const NearestCityDataSlug = "nearest_city?key="
-
 const mainCardsContainer = document.getElementById("main-cards-container")
-
 
 async function getSupportedCountries () {
     console.log("getData Function Has Started");
@@ -16,6 +14,8 @@ async function getSupportedCountries () {
 }
 
 // getSupportedCountries()
+
+getNearestCityData()
 
 async function getNearestCityData () {
     console.log("getNearestCityData Function Has Started");
@@ -30,20 +30,24 @@ function createVisualBar(n){
 
         //Initialize data points array
         let weatherDataArray = [];
-        function weatherDataObject (abbrev, name, dataPoint, percentString) {
+        function weatherDataObject (abbrev, name, dataPoint, percentString, city, state) {
             this.abbrev = abbrev;
             this.name = name;
             this.dataPoint = dataPoint;
             this.percentString = percentString;
+            this.city = city;
+            this.state = state;
         }
 
         //Create the outer card for the city
         let cityCard = document.createElement('div');
         cityCard.className = "card p-3";
 
-        //Create City Title
+        //Create City/State Title and add to the city card
         let cityTitle = document.createElement('h2');
         cityTitle.innerText = `${n.data.city}, ${n.data.state}`;
+        mainCardsContainer.appendChild(cityCard);
+        cityCard.appendChild(cityTitle);
 
         //Process AQI Data (Air Quality Index)
         let aqi = n.data.current.pollution.aqius;
@@ -91,8 +95,7 @@ function createVisualBar(n){
             barInner.style.width = weatherDataObject.percentString;
             barInner.style.backgroundColor = barColor;
 
-            mainCardsContainer.appendChild(cityCard);
-            cityCard.appendChild(Title);
+            //Add all the dom elements to the page
 
             cityCard.appendChild(Title);
             cityCard.appendChild(barContainer);
@@ -101,7 +104,7 @@ function createVisualBar(n){
         });
 }
 
-getNearestCityData()
+
 
 
 
