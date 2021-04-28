@@ -7,7 +7,7 @@ const mainCardsContainer = document.getElementById("main-cards-container");
 const stateSelectorField = document.getElementById("select-state");
 const citySelectorField = document.getElementById("select-city");
 
-// let removeCardButtons = [];
+let removeCardButtons = [];
 
 let selectedStateName = "" ;
 
@@ -94,10 +94,18 @@ function createVisualBar(n){
         let cityCard = document.createElement('div');
         cityCard.className = "card p-3 m-4";
 
+        //Set custom dom attributes for city and state to reference on events
+        cityCard.setAttribute("state-name", "" + n.data.state + "") ;
+        cityCard.setAttribute("city-name", "" + n.data.city + "") ;
+
+        removeCardButtons = document.getElementsByClassName("remove-card")
+
         //Create remove card button
         let removeCardButton = document.createElement('div');
         removeCardButton.className = "btn btn-secondary remove-card" ;
         removeCardButton.innerText = "X"
+        removeCardButtons = document.getElementsByClassName("remove-card");
+        console.log(removeCardButtons);
 
         //Create City/State Title and add to the city card
         let cityTitle = document.createElement('h2');

@@ -10,3 +10,9 @@
     border-radius: 20px 0px 0px 20px;
     height: 100%;
 }
+
+.remove-card{
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+}
