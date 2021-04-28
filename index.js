@@ -25,9 +25,15 @@ getSupportedStates()
 
 async function getSupportedStates () {
     let resStates = await fetch(`${baseURL}states?country=USA&key=${apiKey}`);
+    console.log(resStates);
     let resData = await resStates.json();
+    console.log(resData);
+    if(resData.status == "fail"){
+        console.log(`Fetch failed.  Message: ${resData.data.message}`);
+    } else {
     let supportedStates = await resData.data;
     addStatesToList(supportedStates);
+    }
 }
 
 //Adds supported states to drop down list
