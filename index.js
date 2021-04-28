@@ -7,6 +7,10 @@ const mainCardsContainer = document.getElementById("main-cards-container");
 const stateSelectorField = document.getElementById("select-state");
 const citySelectorField = document.getElementById("select-city");
 
+//Set initial state of selector fields
+stateSelectorField.disabled = true;
+citySelectorField.disabled = true;
+
 let removeCardButtons = [];
 
 let selectedStateName = "" ;
@@ -15,16 +19,13 @@ citySelectorField.onchange = getCityData;
 stateSelectorField.onchange = getCurrentState ;  //Don't use () because we want reference the function but not immediately call it when it initially gets read.
 
 
-// 
-
-
 getSupportedStates()
 
 async function getSupportedStates () {
     let resStates = await fetch(`${baseURL}states?country=USA&key=${apiKey}`);
     let resData = await resStates.json();
     let supportedStates = await resData.data;
-    await addStatesToList(supportedStates);
+    addStatesToList(supportedStates);
     // console.log(supportedStates[0].state);
     // await getSupportedCities(supportedStates[0].state);
     // selectedStateName = supportedStates[0].state
@@ -38,6 +39,7 @@ function addStatesToList(arr) {
         stateOptions += `<option>${element.state}</option>`
     });
     stateSelectorField.innerHTML = stateOptions;
+    stateSelectorField.disabled = false;
 }
 
 
@@ -64,17 +66,25 @@ function addCitiesToList(cities) {
 
     });
     citySelectorField.innerHTML = cityOptions;
-    
-
+    citySelectorField.disabled = false;
 }
 
 async function getCityData (e) {
     let cityName = e.target.value;
     let resCity = await fetch(`${baseURL}city?city=${cityName}&state=${selectedStateName}&country=USA&key=${apiKey}`);
     cityData = await resCity.json();
-    console.log(cityData);
+    // console.log(cityData);
     createVisualBar(cityData);
     // console.log(nearestCityData.data.current.pollution.aqius);
+}
+
+//Initialize a function to remove a card when the remove card button is clicked
+function removeCard (e){
+    
+    let currentCard = e.target.parentNode;
+    let cardsContainer = e.target.parentNode.parentNode;
+    console.log("Remove Card Has Been Triggered for " + currentCard);
+    cardsContainer.removeChild(currentCard);
 }
 
 function createVisualBar(n){
@@ -103,18 +113,20 @@ function createVisualBar(n){
         //Create remove card button
         let removeCardButton = document.createElement('div');
         removeCardButton.className = "btn btn-secondary remove-card" ;
-        removeCardButton.innerText = "X"
         removeCardButtons = document.getElementsByClassName("remove-card");
-        console.log(removeCardButtons);
+        
 
         //Create City/State Title and add to the city card
         let cityTitle = document.createElement('h2');
         cityTitle.innerText = `${n.data.city}, ${n.data.state}`;
 
         //Append card to static dom element
-        mainCardsContainer.appendChild(cityCard);
+        mainCardsContainer.prepend(cityCard);
         cityCard.appendChild(cityTitle);
         cityCard.appendChild(removeCardButton);
+
+        //Create an onclick trigger for this card
+        removeCardButton.onclick = removeCard;
 
         //Process AQI Data (Air Quality Index)
         let aqi = (n.data.current.pollution.aqius).toFixed(1);
@@ -130,7 +142,6 @@ function createVisualBar(n){
 
         weatherDataArray.push(new weatherDataObject("temp", "Temperature (F)", tempFar, tempFarPercentString));
    
-        
         //Iterate through data and create dom elements
 
         weatherDataArray.forEach(weatherDataObject => {
@@ -149,7 +160,8 @@ function createVisualBar(n){
                 else if (weatherDataObject.dataPoint < 101) {barColor = "Yellow"}
             }
             else if (weatherDataObject.abbrev == "temp") {
-                barColor = "blue"
+                barColor = "#ffa661"
+
             }
 
             //Create the inner bar
@@ -166,64 +178,3 @@ function createVisualBar(n){
 
         });
 }
-
-
-
-
-
-//Original code I built to staticly create teh elements:
-// //Set Bar color
-    // let barColorAqi = "rgba(255, 255, 255, 0)"
-    // if (aqi < 51) {barColorAqi = "Green"}
-    // else if (aqi < 101) {barColorAqi = "Yellow"}
-        
-    // //Create the aqi bar container
-    // let barContainerAqi = document.createElement('div');
-    // barContainerAqi.className = "visual-bar-container";
-    
-    // //Create the aqi inner bar
-    // let barInnerAqi = document.createElement('div');
-    // barInnerAqi.className = "visual-bar-inside visual-bar-aqi";
-    // barInnerAqi.style.width = aqiPercentString;
-    // barInnerAqi.style.backgroundColor = barColorAqi;
-
-    // //Create Temperature Title
-    // let tempTitle = document.createElement('h3');
-    // tempTitle.innerText = `Temp (F): ${tempFarString} deg`;
-
-    // //Create the temp bar container
-    // let barContainerTemp = document.createElement('div');
-    // barContainerTemp.className = "visual-bar-container";
-
-    // //Create the temp bar inner container
-    // let barInnerTemp = document.createElement('div');
-    // barInnerTemp.className = "visual-bar-inside visual-bar-temp";
-    // barInnerTemp.style.width = tempFarPercentString;
-
-    //Append Elements
-
-
-
-    // mainCardsContainer.appendChild(cityCard);
-    // cityCard.appendChild(cityTitle);
-
-
-    // cityCard.appendChild(aqiTitle);
-    // cityCard.appendChild(barContainerAqi);
-    // barContainerAqi.appendChild(barInnerAqi);
-
-    // cityCard.appendChild(tempTitle);
-    // cityCard.appendChild(barContainerTemp);
-    // barContainerTemp.appendChild(barInnerTemp);
-    // console.log(barInnerTemp);
-
-
-// async function getListOfPhotoCities (){
-//     let incomingData = await fetch("https://api.teleport.org/api/urban_areas");
-//     photoCityList = await incomingData.json();
-//     doesSomethingWithData(photoCityList)
-
-//     console.log(photoCityList._links);
-// }
-
-// getListOfPhotoCities();

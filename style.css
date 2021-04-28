@@ -12,7 +12,17 @@
 }
 
 .remove-card{
+    position:absolute;
+    right: 5%;
     border-radius: 50%;
     width: 30px;
     height: 30px;
+    background-image: url("/assets/close-icon-initial.svg");
+    background-size:contain;
+    transition-property: transform;
+}
+
+.remove-card:hover {
+    transform: scale(1.2, 1.2);
+
 }
