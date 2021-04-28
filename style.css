@@ -26,3 +26,19 @@
     transform: scale(1.2, 1.2);
 
 }
+
+.add-city-button-col{
+    display: flex;
+    justify-content:flex-end;
+    align-items: flex-start;
+    flex-direction: column;
+}
+
+#add-city-button{
+    background-color: #208d20;
+    border-color: #066406;
+}
+
+#add-city-button:hover{
+    background-color:#208d20d3 ;
+}

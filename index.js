@@ -6,16 +6,19 @@ const NearestCityDataSlug = "nearest_city?key="
 const mainCardsContainer = document.getElementById("main-cards-container");
 const stateSelectorField = document.getElementById("select-state");
 const citySelectorField = document.getElementById("select-city");
+const addCityButton = document.getElementById("add-city-button")
 
 //Set initial state of selector fields
 stateSelectorField.disabled = true;
 citySelectorField.disabled = true;
+addCityButton.disabled = true;
 
 let removeCardButtons = []; //Current list of cards displayed on the dom (Specifically, each card's 'remove card' button element)
 let selectedStateName = "" ; //Currently selected State name
 
 citySelectorField.onchange = getCityData;
 stateSelectorField.onchange = getCurrentState ;  //Note to self: don't use () for 'onchange' because we want reference the function but not immediately call it when it initially gets read. These type of functions pass event info into the function.
+// NEED TO ADD THIS FUNCTIONALITY addCityButton.onclick = 
 
 //Get the supported states on page load!
 getSupportedStates()
@@ -70,10 +73,13 @@ async function getCityData (e) {
         let resCity = await fetch(`${baseURL}city?city=${cityName}&state=${selectedStateName}&country=USA&key=${apiKey}`);
         cityData = await resCity.json();
         // console.log(cityData);
+        addCityButton.disabled = false;
         createVisualBar(cityData);
-    }
+    }else {addCityButton.disabled = true}
 
 }
+
+
 
 //Initialize a function to remove a card when the remove card button is clicked
 function removeCard (e){
