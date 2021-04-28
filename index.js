@@ -6,8 +6,16 @@ const NearestCityDataSlug = "nearest_city?key="
 const mainCardsContainer = document.getElementById("main-cards-container");
 const stateSelectorField = document.getElementById("select-state");
 const citySelectorField = document.getElementById("select-city");
-stateSelectorField.onchange = getCurrentState ;
-// citySelectorField.onchange = getCityData();
+
+// let removeCardButtons = [];
+
+let selectedStateName = "" ;
+
+citySelectorField.onchange = getCityData;
+stateSelectorField.onchange = getCurrentState ;  //Don't use () because we want reference the function but not immediately call it when it initially gets read.
+
+
+// 
 
 
 getSupportedStates()
@@ -17,51 +25,57 @@ async function getSupportedStates () {
     let resData = await resStates.json();
     let supportedStates = await resData.data;
     await addStatesToList(supportedStates);
-    console.log(supportedStates[0].state);
-    await getSupportedCities(supportedStates[0].state);
+    // console.log(supportedStates[0].state);
+    // await getSupportedCities(supportedStates[0].state);
+    // selectedStateName = supportedStates[0].state
+
 }
 
 //Ads supported states to drop down list
 function addStatesToList(arr) {
-    let stateOptions = "";
+    let stateOptions = `<option>Choose...</option>`;
     arr.forEach(element => {
         stateOptions += `<option>${element.state}</option>`
     });
     stateSelectorField.innerHTML = stateOptions;
 }
 
-//Ads supported cities to drop down list
-function addCitiesToList(arr) {
-    let cityOptions = "";
-    arr.forEach(element => {
-        cityOptions += `<option>${element.city}</option>`
-    });
-    citySelectorField.innerHTML = cityOptions;
-}
 
 //When stateSelectorField is changed, this function is run.
-function getCurrentState() {
-    let state = stateSelectorField.value;
-
-    let supportedCities = getSupportedCities(state)
+function getCurrentState(e) {
+    selectedStateName = e.target.value;
+    getSupportedCities(selectedStateName);
     
 }
 
+//Get a state is selected, fetch supported cities
 async function getSupportedCities(state) {
     let resCities = await fetch(`${baseURL}cities?state=${state}&country=USA&key=${apiKey}`);
     let resData = await resCities.json();
     let supportedCities = resData.data;
     addCitiesToList(supportedCities);
-    
 }
 
-// async function getCityData (cityName, stateName) {
-//     let resCity = await fetch(`${baseURL}city?city=${cityName}&${stateName}&country=USA&key=${apiKey}`);
-//     cityData = await resCity.json();
-//     console.log(cityData);
-//     // createVisualBar(nearestCityData);
-//     // console.log(nearestCityData.data.current.pollution.aqius);
-// }
+//Ads supported cities to drop down list
+function addCitiesToList(cities) {
+    let cityOptions = `<option>Choose...</option>`;
+    cities.forEach(element => {
+        cityOptions += `<option>${element.city}</option>`
+
+    });
+    citySelectorField.innerHTML = cityOptions;
+    
+
+}
+
+async function getCityData (e) {
+    let cityName = e.target.value;
+    let resCity = await fetch(`${baseURL}city?city=${cityName}&state=${selectedStateName}&country=USA&key=${apiKey}`);
+    cityData = await resCity.json();
+    console.log(cityData);
+    createVisualBar(cityData);
+    // console.log(nearestCityData.data.current.pollution.aqius);
+}
 
 function createVisualBar(n){
 
@@ -78,13 +92,21 @@ function createVisualBar(n){
 
         //Create the outer card for the city
         let cityCard = document.createElement('div');
-        cityCard.className = "card p-3";
+        cityCard.className = "card p-3 m-4";
+
+        //Create remove card button
+        let removeCardButton = document.createElement('div');
+        removeCardButton.className = "btn btn-secondary remove-card" ;
+        removeCardButton.innerText = "X"
 
         //Create City/State Title and add to the city card
         let cityTitle = document.createElement('h2');
         cityTitle.innerText = `${n.data.city}, ${n.data.state}`;
+
+        //Append card to static dom element
         mainCardsContainer.appendChild(cityCard);
         cityCard.appendChild(cityTitle);
+        cityCard.appendChild(removeCardButton);
 
         //Process AQI Data (Air Quality Index)
         let aqi = (n.data.current.pollution.aqius).toFixed(1);
