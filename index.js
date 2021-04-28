@@ -1,30 +1,67 @@
 //Set Constants
 const baseURL = "http://api.airvisual.com/v2/"
 const apiKey = "a1d8a74d-2f39-4e75-a89f-70fa6578cbd9"
-const supportedCountriesSlug = "countries?key="
+
 const NearestCityDataSlug = "nearest_city?key="
-const mainCardsContainer = document.getElementById("main-cards-container")
+const mainCardsContainer = document.getElementById("main-cards-container");
+const stateSelectorField = document.getElementById("select-state");
+const citySelectorField = document.getElementById("select-city");
+stateSelectorField.onchange = getCurrentState ;
+// citySelectorField.onchange = getCityData();
 
-async function getSupportedCountries () {
-    console.log("getData Function Has Started");
-    let resCountries = await fetch(baseURL+supportedCountriesSlug+apiKey);
-    let data = await resCountries.json();
-    console.log(data);
-    return data;
+
+getSupportedStates()
+
+async function getSupportedStates () {
+    let resStates = await fetch(`${baseURL}states?country=USA&key=${apiKey}`);
+    let resData = await resStates.json();
+    let supportedStates = await resData.data;
+    await addStatesToList(supportedStates);
+    console.log(supportedStates[0].state);
+    await getSupportedCities(supportedStates[0].state);
 }
 
-// getSupportedCountries()
-
-getNearestCityData()
-
-async function getNearestCityData () {
-    console.log("getNearestCityData Function Has Started");
-    let nearestCityData = await fetch(baseURL+NearestCityDataSlug+apiKey);
-    nearestCityData = await nearestCityData.json();
-    console.log(nearestCityData);
-    createVisualBar(nearestCityData);
-    // console.log(nearestCityData.data.current.pollution.aqius);
+//Ads supported states to drop down list
+function addStatesToList(arr) {
+    let stateOptions = "";
+    arr.forEach(element => {
+        stateOptions += `<option>${element.state}</option>`
+    });
+    stateSelectorField.innerHTML = stateOptions;
 }
+
+//Ads supported cities to drop down list
+function addCitiesToList(arr) {
+    let cityOptions = "";
+    arr.forEach(element => {
+        cityOptions += `<option>${element.city}</option>`
+    });
+    citySelectorField.innerHTML = cityOptions;
+}
+
+//When stateSelectorField is changed, this function is run.
+function getCurrentState() {
+    let state = stateSelectorField.value;
+
+    let supportedCities = getSupportedCities(state)
+    
+}
+
+async function getSupportedCities(state) {
+    let resCities = await fetch(`${baseURL}cities?state=${state}&country=USA&key=${apiKey}`);
+    let resData = await resCities.json();
+    let supportedCities = resData.data;
+    addCitiesToList(supportedCities);
+    
+}
+
+// async function getCityData (cityName, stateName) {
+//     let resCity = await fetch(`${baseURL}city?city=${cityName}&${stateName}&country=USA&key=${apiKey}`);
+//     cityData = await resCity.json();
+//     console.log(cityData);
+//     // createVisualBar(nearestCityData);
+//     // console.log(nearestCityData.data.current.pollution.aqius);
+// }
 
 function createVisualBar(n){
 
@@ -50,21 +87,19 @@ function createVisualBar(n){
         cityCard.appendChild(cityTitle);
 
         //Process AQI Data (Air Quality Index)
-        let aqi = n.data.current.pollution.aqius;
+        let aqi = (n.data.current.pollution.aqius).toFixed(1);
         // let aqi = 51; // for testing, comment out the above line and use this number
         let aqiPercent = Math.floor((aqi/300) * 100);
         let aqiPercentString = `${aqiPercent}%`;
         weatherDataArray.push(new weatherDataObject("aqi", "Air Quality Index", aqi, aqiPercentString));
 
         //Process Temp Data
-        let tempFar = ((n.data.current.weather.tp) * (9/5)) + 32 ;
+        let tempFar = (((n.data.current.weather.tp) * (9/5)) + 32).toFixed(1) ;
         let tempFarString = Math.floor(tempFar.toString());
         let tempFarPercentString= `${tempFar}%`
-        console.log(tempFarPercentString);
 
         weatherDataArray.push(new weatherDataObject("temp", "Temperature (F)", tempFar, tempFarPercentString));
    
-        console.log(weatherDataArray);
         
         //Iterate through data and create dom elements
 
@@ -72,7 +107,6 @@ function createVisualBar(n){
             //Create the data point Title
             let Title = document.createElement('h3');
             Title.innerText = `${weatherDataObject.name}: ${weatherDataObject.dataPoint}`;
-            console.log(Title);
 
             //Create the aqi bar container
             let barContainer = document.createElement('div');
@@ -80,7 +114,6 @@ function createVisualBar(n){
 
             //Set Inner Bar color
             let barColor = "black"
-            console.log(weatherDataObject.dataPoint);
             if (weatherDataObject.abbrev == "aqi") {
                 if (weatherDataObject.dataPoint < 51) {barColor = "Green"}
                 else if (weatherDataObject.dataPoint < 101) {barColor = "Yellow"}

@@ -9,14 +9,41 @@
     <title>IQ Air API</title>
 </head>
 <body>
-    <div id = "main-cards-container" class="container-md">
-        <h1>Test Title</h1>
-        <div class="card p-3">
-            <div class="visual-bar-container">
-                <div class="visual-bar-inside visual-bar-aqi"></div> 
+    
+    <div class="container">
+        <h1>IQ Air API</h1>
+        <form class="row g-3 m-3 needs-validation">
+            <div class="col-md-3 position-relative">
+                <label for="select-state" class="form-label">State</label>
+                <select class="form-select" id="select-state" required>
+                    <option selected disabled value="">Choose...</option>
+                    <option>...</option>
+                  </select>
+                  <div class="invalid-tooltip">
+                    Please select a valid state.
+                  </div>
+            </div>
+
+            <div class="col-md-3 position-relative">
+                <label for="select-city" class="form-label">City</label>
+                <select class="form-select" id="select-city" required>
+                    <option selected disabled value="">Choose...</option>
+                    <option>...</option>
+                  </select>
+                  <div class="invalid-tooltip">
+                    Please select a valid City.
+                  </div>
+            </div>
+
+        </form>
+        <div id = "main-cards-container" class="container-md">
+
+            <div class="card p-3">
+                <div class="visual-bar-container">
+                    <div class="visual-bar-inside visual-bar-aqi"></div> 
+                </div>
             </div>
         </div>
-
     </div>
 
     
