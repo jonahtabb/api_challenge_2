@@ -150,29 +150,26 @@ function setSelectedCityName(e) {
 //Get the data values for the current city
 async function getCityData () {
         cityAlreadyExists = document.querySelectorAll(`div[cityName = "${selectedCityName}"]`) ;
-        console.log(cityAlreadyExists);
         if (cityAlreadyExists.length === 0){
             let resCity = await fetch(`${baseURL}city?city=${selectedCityName}&state=${selectedStateName}&country=USA&key=${apiKey}`);
             cityData = await resCity.json();
-            createVisualBar(cityData);
+            createCityDataCard(cityData);
         } else {
             alert("You've already added this city to your dashboard!")
         }
-        
-
 }
 
 //Initialize a function to remove a card when the remove card button is clicked
 function removeCard (e){
-    let currentCard = e.target.parentNode;
-    let cardsContainer = e.target.parentNode.parentNode;
+    let currentCard = e.target.parentNode.parentNode;
+    let cardsContainer = e.target.parentNode.parentNode.parentNode;
     currentCard.style.opacity = '0';
     setTimeout(function(){cardsContainer.removeChild(currentCard)}, 500)
     console.log("Remove Card Has Been Triggered for " + currentCard);
     // cardsContainer.removeChild(currentCard);
 }
 
-function createVisualBar(n){
+function createCityDataCard(n){
     //Initialize data points array
     let weatherDataArray = [];
     function weatherDataObject (abbrev, name, dataPoint, percentString, city, state) {
@@ -184,15 +181,20 @@ function createVisualBar(n){
         this.state = state;
     }
 
+    //Create the container for each card
+    let cityCardContainer = document.createElement('div');
+    cityCardContainer.className = "col-md g-4 card-container";
+    //Set up transition properties
+    cityCardContainer.style.transitionDuration = "499ms";
+    cityCardContainer.style.transitionProperty ="opacity"
+    cityCardContainer.style.opacity="0" ;
+
     //Create the outer card for the city
     let cityCard = document.createElement('div');
-    cityCard.className = "card p-3 m-4";
-    //Set up properties to fade out when removed
-    cityCard.style.transitionDuration = "499ms";
-    cityCard.style.transitionProperty ="opacity"
-    cityCard.style.opacity="1"
+    cityCard.className = "card p-3";
 
-    //Set custom dom attributes for city and state to reference on events
+    
+    //Set custom dom attributes for city and state to reference on events.  These are used to easily access the cards from anywhere in the file using query selector using a query like this document.querySelectorAll(`div[cityName = "${selectedCityName}"]`
     cityCard.setAttribute("stateName", "" + n.data.state + "") ;
     cityCard.setAttribute("cityName", "" + n.data.city + "") ;
 
@@ -203,13 +205,13 @@ function createVisualBar(n){
     removeCardButton.className = "btn btn-secondary remove-card" ;
     removeCardButtons = document.getElementsByClassName("remove-card");
     
-
     //Create City/State Title and add to the city card
     let cityTitle = document.createElement('h2');
     cityTitle.innerText = `${n.data.city}, ${n.data.state}`;
 
     //Append card to static dom element
-    mainCardsContainer.prepend(cityCard);
+    mainCardsContainer.prepend(cityCardContainer);
+    cityCardContainer.appendChild(cityCard);
     cityCard.appendChild(cityTitle);
     cityCard.appendChild(removeCardButton);
 
@@ -260,6 +262,9 @@ function createVisualBar(n){
         cityCard.appendChild(Title);
         cityCard.appendChild(barContainer);
         barContainer.appendChild(barInner);
+
+        //Fade In the Card
+        setTimeout(() => cityCardContainer.style.opacity="1", 200) ;
 
     });
 }
