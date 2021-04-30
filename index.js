@@ -71,12 +71,13 @@ addCityButton.disabled = true;
 
 let removeCardButtons = []; //Current list of cards displayed on the dom (Specifically, each card's 'remove card' button element)
 let selectedStateName = "" ; //Currently selected State name
+let selectedCityName = "" ; //Currently selected City name
 
-citySelectorField.onchange = getCityData;
+citySelectorField.onchange = setSelectedCityName ;
 stateSelectorField.onchange = getCurrentState ;  //Note to self: don't use () for 'onchange' because we want reference the function but not immediately call it when it initially gets read. These type of functions pass event info into the function.
-// NEED TO ADD THIS FUNCTIONALITY addCityButton.onclick = 
+addCityButton.onclick = getCityData;
 
-//Get the supported states on page load! Commented out in favor of the debugging function
+//Get the supported states on page load! Commented out in favor of the debugging function to load the static array of states.
 //getSupportedStates()
 
 async function getSupportedStates () {
@@ -122,7 +123,7 @@ async function getSupportedCities(state) {
     let resCities = await fetch(`${baseURL}cities?state=${state}&country=USA&key=${apiKey}`);
     let resData = await resCities.json();
     let supportedCities = resData.data;
-    console.log(supportedCities);
+    // console.log(supportedCities);
     addCitiesToList(supportedCities);
 }
 
@@ -136,15 +137,29 @@ function addCitiesToList(cities) {
     citySelectorField.disabled = false;
 }
 
-async function getCityData (e) {
-    let cityName = e.target.value;
-    if(cityName !== "Choose..."){
-        let resCity = await fetch(`${baseURL}city?city=${cityName}&state=${selectedStateName}&country=USA&key=${apiKey}`);
-        cityData = await resCity.json();
-        // console.log(cityData);
+//Set the selectedCityName when a city is selected
+
+function setSelectedCityName(e) {
+    selectedCityName = e.target.value;
+    console.log(`selected city is: ${selectedCityName}`);
+    if (selectedCityName !== "Choose..."){
         addCityButton.disabled = false;
-        createVisualBar(cityData);
     }else {addCityButton.disabled = true}
+}
+
+//Get the data values for the current city
+async function getCityData () {
+        cityAlreadyExists = document.querySelectorAll(`div[cityName = "${selectedCityName}"]`) ;
+        console.log(cityAlreadyExists);
+        if (cityAlreadyExists.length === 0){
+            let resCity = await fetch(`${baseURL}city?city=${selectedCityName}&state=${selectedStateName}&country=USA&key=${apiKey}`);
+            cityData = await resCity.json();
+            createVisualBar(cityData);
+        } else {
+            alert("You've already added this city to your dashboard!")
+        }
+        
+
 }
 
 //Initialize a function to remove a card when the remove card button is clicked
@@ -178,8 +193,8 @@ function createVisualBar(n){
     cityCard.style.opacity="1"
 
     //Set custom dom attributes for city and state to reference on events
-    cityCard.setAttribute("state-name", "" + n.data.state + "") ;
-    cityCard.setAttribute("city-name", "" + n.data.city + "") ;
+    cityCard.setAttribute("stateName", "" + n.data.state + "") ;
+    cityCard.setAttribute("cityName", "" + n.data.city + "") ;
 
     removeCardButtons = document.getElementsByClassName("remove-card")
 
