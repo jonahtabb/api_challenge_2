@@ -1,3 +1,59 @@
+//For Debugging
+//Here is a states array that matches the API call so I don't max out my api
+const supportedStatesStandIn = [
+    {state: "Alabama"},
+    {state: "Alaska"},
+    {state: "Arizona"},
+    {state: "Arkansas"},
+    {state: "California"},
+    {state: "Colorado"},
+    {state: "Connecticut"},
+    {state: "Delaware"},
+    {state: "Florida"},
+    {state: "Georgia"},
+    {state: "Hawaii"},
+    {state: "Idaho"},
+    {state: "Illinois"},
+    {state: "Indiana"},
+    {state: "Iowa"},
+    {state: "Kansas"},
+    {state: "Kentucky"},
+    {state: "Louisiana"},
+    {state: "Maine"},
+    {state: "Maryland"},
+    {state: "Massachusetts"},
+    {state: "Michigan"},
+    {state: "Minnesota"},
+    {state: "Mississippi"},
+    {state: "Missouri"},
+    {state: "Montana"},
+    {state: "Nebraska"},
+    {state: "Nevada"},
+    {state: "New Hampshire"},
+    {state: "New Jersey"},
+    {state: "New Mexico"},
+    {state: "New York"},
+    {state: "North Carolina"},
+    {state: "North Dakota"},
+    {state: "Ohio"},
+    {state: "Oklahoma"},
+    {state: "Oregon"},
+    {state: "Pennsylvania"},
+    {state: "Rhode Island"},
+    {state: "South Carolina"},
+    {state: "South Dakota"},
+    {state: "Tennessee"},
+    {state: "Texas"},
+    {state: "Utah"},
+    {state: "Vermont"},
+    {state: "Virginia"},
+    {state: "Washington"},
+    {state: "Washington, D.C."},
+    {state: "West Virginia"},
+    {state: "Wisconsin"},
+    {state: "Wyoming"}
+     ]
+
 //Set Constants
 const baseURL = "http://api.airvisual.com/v2/"
 const apiKey = "a1d8a74d-2f39-4e75-a89f-70fa6578cbd9"
@@ -20,8 +76,8 @@ citySelectorField.onchange = getCityData;
 stateSelectorField.onchange = getCurrentState ;  //Note to self: don't use () for 'onchange' because we want reference the function but not immediately call it when it initially gets read. These type of functions pass event info into the function.
 // NEED TO ADD THIS FUNCTIONALITY addCityButton.onclick = 
 
-//Get the supported states on page load!
-getSupportedStates()
+//Get the supported states on page load! Commented out in favor of the debugging function
+//getSupportedStates()
 
 async function getSupportedStates () {
     let resStates = await fetch(`${baseURL}states?country=USA&key=${apiKey}`);
@@ -34,6 +90,13 @@ async function getSupportedStates () {
     let supportedStates = await resData.data;
     addStatesToList(supportedStates);
     }
+}
+
+//This function is for debugging so we don't fetch the states each time
+getSupportStatesStandIn()
+
+function getSupportStatesStandIn () {
+    addStatesToList(supportedStatesStandIn);
 }
 
 //Adds supported states to drop down list
@@ -52,7 +115,6 @@ function getCurrentState(e) {
     if(selectedStateName !== "Choose..."){
     getSupportedCities(selectedStateName);
     }
-    
 }
 
 //Get a state is selected, fetch supported cities
@@ -60,6 +122,7 @@ async function getSupportedCities(state) {
     let resCities = await fetch(`${baseURL}cities?state=${state}&country=USA&key=${apiKey}`);
     let resData = await resCities.json();
     let supportedCities = resData.data;
+    console.log(supportedCities);
     addCitiesToList(supportedCities);
 }
 
@@ -82,10 +145,7 @@ async function getCityData (e) {
         addCityButton.disabled = false;
         createVisualBar(cityData);
     }else {addCityButton.disabled = true}
-
 }
-
-
 
 //Initialize a function to remove a card when the remove card button is clicked
 function removeCard (e){
@@ -149,7 +209,6 @@ function createVisualBar(n){
 
     //Process Temp Data
     let tempFar = (((n.data.current.weather.tp) * (9/5)) + 32).toFixed(1) ;
-    let tempFarString = Math.floor(tempFar.toString());
     let tempFarPercentString= `${tempFar}%`
 
     weatherDataArray.push(new weatherDataObject("temp", "Temperature (F)", tempFar, tempFarPercentString));
@@ -189,3 +248,5 @@ function createVisualBar(n){
 
     });
 }
+
+
