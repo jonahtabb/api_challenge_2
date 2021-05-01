@@ -3,38 +3,70 @@ font-family: 'Antonio', sans-serif;
 Paragraph Font:
 font-family: 'ABeeZee', sans-serif;*/
 body{
-    font-family: 'ABeeZee', sans-serif;;
+    font-family: 'Roboto Condensed', sans-serif;
+    color: #4357AD;
+    line-height: 1;
 }
 
 p{
-    font-family: 'ABeeZee', sans-serif;
     color:hsl(196,40%,11%);
 }
 h1{
-    font-family: 'Antonio', sans-serif
+    font-size: 3.5rem ;
+    font-family: 'Bebas Neue', sans-serif;
 }
 h2{
-    color: rgb(255, 255, 255);
-    font-size: 1.2rem;
+    font-size: 1.7rem;
 }
 h3{
-    color: rgb(255, 255, 255);
-    font-size:1rem;
+    font-family: 'Bebas Neue', sans-serif;
 }
 
-/* #card-sample{
-    background-image: url("https://lh3.googleusercontent.com/p/AF1QipPIE77NTqPU4cqLkZMSJ-L1mJ-R4fta1CMDDgqj=s1600-w400");
-    background-size: contain;
-    background-clip:content-box;
-    background-repeat: no-repeat;
-    min-height: 250px;
-} */
+.choose-container-outer{
+    background-color: #EBF3FF;
+    box-shadow: 0px 4px 4px rgba(0, 24, 60, 0.2);
+    border-radius: 10px;
+}
 
-/* .card-col-data{
-    background-color: rgba(245, 245, 245, 0.459);
-    background-clip:padding-box;
-    padding: 0 0 0 0;
-} */
+.choose-container-upper{
+    background-color: #C1DCFF;
+    border-radius: 10px 10px 0px 0px;
+    padding: 10px 10px 3px 10px;
+    /* height: 50%; */
+}
+
+.form-label{
+    font-family: 'Bebas Neue', sans-serif;
+    font-size:1.5rem;
+}
+
+.form-select{
+    background-color: #EBF3FF;
+    border:none;
+}
+
+.add-city-button-col{
+    display: flex;
+    justify-content:flex-end;
+    align-items: flex-start;
+    flex-direction: column;
+}
+
+#add-city-button{
+    font-family: 'Bebas Neue', sans-serif;
+    font-size:1.5rem;
+    background: #4357AD;
+    box-shadow: 0px 4px 6px rgba(0, 24, 60, 0.3);
+    border-radius: 10px;
+    border: none;
+}
+
+#add-city-button:hover{
+    color: #4357AD;
+    background-color: #EBF3FF;
+    border: 2px solid #4357AD;
+}
+
 .card-row-style{
     min-height: 200px;
 }
@@ -72,29 +104,6 @@ h3{
     background-color: rgba(255, 255, 255, 0.876);
     
 } */
-
-.background-1{
-    background-color: #000000;
-    background-image: linear-gradient(147deg, #000000 0%, #011c2e 84%);
-    /* background-image: url(/assets/maria-vojtovicova-7cfAzY0mj9w-unsplash.jpg); */
-    background-repeat: no-repeat;
-    background-size:cover;
-    background-position-x: center;
-    height: 100vh;
-    color:white;
-}
-
-.background-2{
-    /* background: rgb(15,32,39); */
-    /* background: linear-gradient(180deg, rgba(15,32,39,1) 0%, rgba(32,58,67,1) 35%, rgba(44,83,100,1) 100%); */
-    background-image: url(/assets/mark-basarab-1OtUkD_8svc-unsplash.jpg);
-    background-repeat: no-repeat;
-    background-size:cover;
-    height: 100vh;
-    color:white;
-    
-}
-
 
 .visual-bar-container{
     width : 100%;
@@ -148,18 +157,3 @@ h3{
     background-color: transparent;
 }
 
-.add-city-button-col{
-    display: flex;
-    justify-content:flex-end;
-    align-items: flex-start;
-    flex-direction: column;
-}
-
-#add-city-button{
-    background-color: #208d20;
-    border-color: #066406;
-}
-
-#add-city-button:hover{
-    background-color:#208d20d3 ;
-}

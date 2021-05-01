@@ -186,7 +186,7 @@ function createCityDataCard(n){
         this.city = city;
         this.state = state;
     }
-
+    console.log(n);
     //Create the container for each card
     let cityCardContainer = document.createElement('div');
     cityCardContainer.className = "col-md g-4 card-container";
