@@ -8,3 +8,9 @@ Datapoints:
     "dataPoint": 46.4,
     "percentString": "46.4%"
 }
+
+Google Photo Search
+https://developers.google.com/maps/documentation/places/web-service/photos?hl=en_US
+
+Google API Place Search
+https://developers.google.com/maps/documentation/places/web-service/search

@@ -14,11 +14,11 @@ h1{
     font-family: 'Antonio', sans-serif
 }
 h2{
-    color: rgb(15,32,39);
+    color: rgb(255, 255, 255);
     font-size: 1.2rem;
 }
 h3{
-    color: rgb(15,32,39);
+    color: rgb(255, 255, 255);
     font-size:1rem;
 }
 
@@ -75,7 +75,8 @@ h3{
 
 .background-1{
     background-color: #000000;
-    background-image: linear-gradient(147deg, #000000 0%, #012c49 74%);
+    background-image: linear-gradient(147deg, #000000 0%, #011c2e 84%);
+    /* background-image: url(/assets/maria-vojtovicova-7cfAzY0mj9w-unsplash.jpg); */
     background-repeat: no-repeat;
     background-size:cover;
     background-position-x: center;
@@ -115,9 +116,10 @@ h3{
 
 .card{
     box-shadow: 2px 2px 6px 15px rgba(0, 0, 0, 0.109); 
-    background-color: rgba(255, 255, 255, 0.876);
+    background-color: rgba(0, 2, 22, 0.644);
     border-radius: 10px;
     border: none;
+    background-blend-mode:darken;
 
 }
 .remove-card{

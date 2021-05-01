@@ -1,5 +1,7 @@
 //For Debugging
-//Here is a states array that matches the API call so I don't max out my api
+//Here is a States Array that matches the fetch response for the async function 'getSupportedStates' 
+//...so development and debugging can be done without hitting rate maximums
+// See lines ~ 86-88 to activate EITHER 'getSupportedStates()' or 'getSupportedStatesStandIn()'
 const supportedStatesStandIn = [
     {state: "Alabama"},
     {state: "Alaska"},
@@ -66,7 +68,7 @@ const NearestCityDataSlug = "nearest_city?key="
 const mainCardsContainer = document.getElementById("main-cards-container");
 const stateSelectorField = document.getElementById("select-state");
 const citySelectorField = document.getElementById("select-city");
-const addCityButton = document.getElementById("add-city-button")
+const addCityButton = document.getElementById("add-city-button");
 
 //Set initial state of selector fields
 stateSelectorField.disabled = true;
@@ -83,6 +85,7 @@ addCityButton.onclick = getCityData;
 
 //Get the supported states on page load! Commented out in favor of the debugging function to load the static array of states.
 //getSupportedStates()
+getSupportedStatesStandIn() 
 
 async function getSupportedStates () {
     let resStates = await fetch(`${baseURL}states?country=USA&key=${apiKey}`);
@@ -98,9 +101,7 @@ async function getSupportedStates () {
 }
 
 //This function is for debugging so we don't fetch the states each time
-getSupportStatesStandIn()
-
-function getSupportStatesStandIn () {
+function getSupportedStatesStandIn () {
     addStatesToList(supportedStatesStandIn);
 }
 
@@ -158,7 +159,7 @@ async function getCityData () {
             let resCity = await fetch(`${baseURL}city?city=${selectedCityName}&state=${selectedStateName}&country=USA&key=${apiKey}`);
             cityData = await resCity.json();
             createCityDataCard(cityData);
-            photoFetcher(selectedCityName);
+            photoFetcher(`${selectedCityName}${selectedStateName}`);
         } else {
             alert("You've already added this city to your dashboard!")
         }
@@ -278,30 +279,25 @@ function createCityDataCard(n){
 
 async function photoFetcher (citySearch) {
     let removeSpaces = await citySearch.replace(/\s+/g, '') ;
-    let results = await fetch(`https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=${removeSpaces}&inputtype=textquery&fields=photos&key=${gPlaceApiKey}
-    `)
+    let results = await fetch(`https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=${removeSpaces}&inputtype=textquery&fields=photos&key=${gPlaceApiKey}`)
+
     let resultsJson = await results.json();
     console.log(resultsJson);
-    if (resultsJson.candidates.length !== 0){
-  
+    if (resultsJson.candidates.length > 0 
+        && resultsJson.status === "OK" 
+        && resultsJson.candidates[0].hasOwnProperty("photos")) {
         console.log(resultsJson.candidates[0]["photos"][0]["photo_reference"]);
         let photoReference = await resultsJson.candidates[0]["photos"][0]["photo_reference"] ;
     
-        let photoResult = await fetch(`https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${photoReference}&key=${gPlaceApiKey}
-        `)
-        // let photoResultJson = await photoResult.json();
-    
+        let photoResult = await fetch(`https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${photoReference}&key=${gPlaceApiKey}`)
+
         console.log(photoResult.url);
         let imageSample = document.createElement('img');
         imageSample.src = photoResult.url ;
         mainCardsContainer.appendChild(imageSample);
     } else {
-        console.log("No Photo Found");
+        console.log(`Google Maps Api probably does not contain a photo of this place.  Status of returned request is "${resultsJson.status}"`);
     }
-
-
-
-    
 }
 
 
