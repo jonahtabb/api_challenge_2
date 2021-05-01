@@ -58,6 +58,10 @@ const supportedStatesStandIn = [
 const baseURL = "http://api.airvisual.com/v2/"
 const apiKey = "a1d8a74d-2f39-4e75-a89f-70fa6578cbd9"
 
+//Google Places API
+const gPlaceApiKey= "AIzaSyBgiBdaU5dfZ9PE4O9gfHKMlpLvDGFYIuU"
+const gPlaceBaseURL = "https://maps.googleapis.com/maps/api/place/"
+
 const NearestCityDataSlug = "nearest_city?key="
 const mainCardsContainer = document.getElementById("main-cards-container");
 const stateSelectorField = document.getElementById("select-state");
@@ -154,6 +158,7 @@ async function getCityData () {
             let resCity = await fetch(`${baseURL}city?city=${selectedCityName}&state=${selectedStateName}&country=USA&key=${apiKey}`);
             cityData = await resCity.json();
             createCityDataCard(cityData);
+            photoFetcher(selectedCityName);
         } else {
             alert("You've already added this city to your dashboard!")
         }
@@ -268,5 +273,36 @@ function createCityDataCard(n){
 
     });
 }
+
+//Get search for cities by name and then fetch a photo if one exists
+
+async function photoFetcher (citySearch) {
+    let removeSpaces = await citySearch.replace(/\s+/g, '') ;
+    let results = await fetch(`https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=${removeSpaces}&inputtype=textquery&fields=photos&key=${gPlaceApiKey}
+    `)
+    let resultsJson = await results.json();
+    console.log(resultsJson);
+    if (resultsJson.candidates.length !== 0){
+  
+        console.log(resultsJson.candidates[0]["photos"][0]["photo_reference"]);
+        let photoReference = await resultsJson.candidates[0]["photos"][0]["photo_reference"] ;
+    
+        let photoResult = await fetch(`https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${photoReference}&key=${gPlaceApiKey}
+        `)
+        // let photoResultJson = await photoResult.json();
+    
+        console.log(photoResult.url);
+        let imageSample = document.createElement('img');
+        imageSample.src = photoResult.url ;
+        mainCardsContainer.appendChild(imageSample);
+    } else {
+        console.log("No Photo Found");
+    }
+
+
+
+    
+}
+
 
 
