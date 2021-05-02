@@ -247,6 +247,10 @@ async function createCityDataCard(n){
     cityCardColB1.className = "card-image-container";
 
     cityCardColB1.setAttribute("style", "background-image: url("+ fetchedPhoto +")")
+
+    if(fetchedPhoto.includes("no-image-avail")){
+        cityCardColB1.setAttribute("style", "background-size: contain")
+    } 
  
     let removeCardButton = document.createElement('div');
     removeCardButton.className = "btn btn-secondary remove-card";
@@ -388,6 +392,7 @@ async function photoFetcher (citySearch) {
         fetchedPhoto = photoResult.url;
     } else {
         console.log(`Google Maps Api probably does not contain a photo of this place.  Status of returned request is "${resultsJson.status}"`);
+        fetchedPhoto = "/assets/no-image-avail.svg"
     }
     return fetchedPhoto;
     

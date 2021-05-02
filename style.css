@@ -145,9 +145,10 @@ h3{
     height: 100%;
     overflow: hidden;
     border-radius: 0px 10px 10px 0px;
-    background-image: url("https://lh3.googleusercontent.com/p/AF1QipPIE77NTqPU4cqLkZMSJ-L1mJ-R4fta1CMDDgqj=s1600-w400");
+    background-image: url("/assets/no-image-avail.svg");
     background-repeat: no-repeat;
     background-size: cover ;
+    background-position: center center; 
 
 }
 
@@ -240,11 +241,11 @@ h3{
 .remove-card{
     position:absolute;
     top: 4%;
-    right: 1%;
+    right: 3%;
     border-radius: 50%;
     border: none;
-    width: 20px;
-    height: 20px;
+    width: 25px;
+    height: 25px;
     background-image: url("/assets/close-icon-blue-3.svg");
     background-color: transparent;
     background-position: center;
