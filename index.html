@@ -17,11 +17,13 @@
 
 <body>
 	<div class="container my-3">
-
+	<!-- Heading Elements -->
 		<div class="container">
 			<h1>Weather Watch</h1>
 			<h2>Get current weather and pollution info from U.S. cities.</h2>
+	<!-- Form Elements -->
 			<form class="row g-3 my-3 needs-validation">
+				<!-- State Selector -->
 				<div class="col-md-3 position-relative">
 					<div class="choose-container-outer">
 						<div class="choose-container-upper">
@@ -36,7 +38,7 @@
 						</div>
 					</div>
 				</div>
-
+				<!-- City Selector -->
 				<div class="col-md-3 position-relative">
 					<div class="choose-container-outer">
 						<div class="choose-container-upper">
@@ -51,43 +53,58 @@
 						</div>
 					</div>
 				</div>
-
+				<!-- Submit Button -->
 				<div class="col-md-3 position-relative add-city-button-col">
 					<button type="button" class="btn btn-primary" id="add-city-button">Add City</button>
 				</div>
-
 			</form>
+			<!-- Card Elements -->
 			<div id="main-cards-container" class="row">
-				<div class="col-xl g-4 card-container"
+				<!-- Sample Card -->
+				<div class="col-xl"
 					style="transition-duration: 499ms; transition-property: opacity; opacity: 1;">
 
-					<div class="card" statename="California" cityname="Agoura Hills" id="card-sample">
-						<div class="row card-row-style">
-
-							<div class="col-7 card-col-data p-3">
-								<h2 class="card-header-custom">Agoura Hills, California</h2>
-								<h3>Air Quality Index: 25.0</h3>
-								<div class="visual-bar-container">
-									<div class="visual-bar-inside" style="width: 8%; background-color: green;">
+					<div class="row card-custom mx-auto h-100" statename="California" cityname="Agoura Hills" id="card-sample">
+						
+						<div class="col-7 px-0 pe-1">
+											<h3 class="card-header-custom">Agoura Hills, California</h3>
+									<div class="col">
+										<div class="row mx-auto h-100">
+											<div class="col p-0 air-quality-index-box">
+												<div class="col d-flex flex-column  h-100">
+													<p class="data-header-text">Air Quality Index</p>
+													<!-- <div class="container-fluid p-0"> -->
+														<div class="row mx-auto align-center">
+															<div class="col-xs py-2 px-0">
+																<div class="visual-bar-container">
+																	<div class="visual-bar-inside aqi"></div>
+																</div>
+															</div>
+															<div class="col-xs py-2 px-0">
+																<div class="data-circle">
+																	<p class="data-text">50</p>
+																</div>
+															</div>
+														</div>
+													<!-- </div> -->
+												</div>
+											</div>
+											<div class="col p-0 temperature-box"></div>
+											<div class="col p-0 humidity-box"></div>
+											<div class="col p-0 wind-box"></div>
+										</div>
 									</div>
-								</div>
+						</div>
 
-								<h3>Temperature (F): 75.2</h3>
-								<div class="visual-bar-container">
-									<div class="visual-bar-inside" style="width: 75.2%; background-color: rgb(255, 166, 97);">
-									</div>
-								</div>
-
-
-							</div>
-
-							<div class="col">
-								<div class="card-image-container p-3">
-									<div class="btn btn-secondary remove-card"></div>
-								</div>
+						<div class="col px-0">
+							<div class="card-image-container">
+								<div class="btn btn-secondary remove-card"></div>
 							</div>
 						</div>
 					</div>
+
+					
+
 				</div>
 				<!-- Javascript dynamically creates cards in here -->
 			</div>
