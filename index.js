@@ -91,7 +91,7 @@ function errorDisplayBar (error) {
         let errorDisplayBar = document.getElementById("error-display-bar");
         let errorText = document.getElementById("error-display-text");
         errorText.innerText = (error);
-        console.log(errorText);
+        console.log(errorText.innerText);
         errorDisplayBar.style.display = "flex";
         setTimeout(() => {errorDisplayBar.style.opacity = "1"}, 100 );
         setTimeout(() => {errorDisplayBar.style.opacity = "0"}, 4000);
@@ -106,7 +106,6 @@ function errorDisplayBar (error) {
         errorText.innerText = "Sorry, we have encountered an error!  Please try refreshing the page."
         errorBarContainer.appendChild(errorDisplayBar);
         errorDisplayBar.appendChild(errorText);
-        console.log("Error Bar Has Been Created");
     }
 }
 
@@ -148,6 +147,7 @@ function addStatesToList(arr) {
 //When stateSelectorField is changed, this function is run.
 function getCurrentState(e) {
     selectedStateName = e.target.value;
+    console.log(`selected state is: ${selectedStateName}`);
     if(selectedStateName !== "Choose..."){
         citySelectorField.disabled = true;
         getSupportedCities(selectedStateName);
@@ -205,14 +205,12 @@ function removeCard (e){
     let cardsContainer = e.target.parentNode.parentNode.parentNode.parentNode.parentNode;
     currentCard.style.opacity = '0';
     setTimeout(function(){cardsContainer.removeChild(currentCard)}, 500)
-    console.log("Remove Card Has Been Triggered for " + currentCard);
-    // cardsContainer.removeChild(currentCard);
+    console.log(`Remove Card Has Been Triggered for ${currentCard.firstChild}`);
+    console.log(currentCard.firstChild);
 }
 
 async function createCityDataCard(n){
     let fetchedPhoto = await photoFetcher(`${selectedCityName}${selectedStateName}`);
-    console.log(fetchedPhoto);
-    console.log(n);
     //Create the container for each card
     let cityCardContainer = document.createElement('div');
     cityCardContainer.className = "col-xl";
@@ -381,16 +379,12 @@ async function photoFetcher (citySearch) {
     let results = await fetch(`https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=${removeSpaces}&inputtype=textquery&fields=photos&key=${gPlaceApiKey}`)
 
     let resultsJson = await results.json();
-    console.log(resultsJson);
     if (resultsJson.candidates.length > 0 
         && resultsJson.status === "OK" 
         && resultsJson.candidates[0].hasOwnProperty("photos")) {
-        console.log(resultsJson.candidates[0]["photos"][0]["photo_reference"]);
         let photoReference = await resultsJson.candidates[0]["photos"][0]["photo_reference"] ;
     
         let photoResult = await fetch(`https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${photoReference}&key=${gPlaceApiKey}`)
-
-        console.log(photoResult.url);
         fetchedPhoto = photoResult.url;
     } else {
         console.log(`Google Maps Api probably does not contain a photo of this place.  Status of returned request is "${resultsJson.status}"`);

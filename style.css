@@ -17,7 +17,7 @@ h1{
     font-family: 'Bebas Neue', sans-serif;
 }
 h2{
-    font-size: 1.7rem;
+    font-size: 1.5rem;
 }
 h3{
     font-family: 'Bebas Neue', sans-serif;
@@ -64,13 +64,19 @@ h3{
 
 .form-select{
     background-color: #EBF3FF;
+    color: #4357AD;
     border:none;
     border-radius: 0px 0px 10px 10px;
 }
 
 .form-select:disabled{
     background-color: rgb(219, 225, 236);
+    color: grey;
 }
+
+.dropdown-menu{
+    background-color: #000;
+  }
 
 .add-city-button-col{
     display: flex;
@@ -95,7 +101,7 @@ h3{
 }
 
 .card-header-custom{
-    padding: 2px 0px 0px 5px;
+    padding: 1rem 0px 0px 1rem;
     font-size: 2rem;
 }
 
