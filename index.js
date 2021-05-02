@@ -213,7 +213,7 @@ async function createCityDataCard(n){
     let fetchedPhoto = await photoFetcher(`${selectedCityName}${selectedStateName}`);
     //Create the container for each card
     let cityCardContainer = document.createElement('div');
-    cityCardContainer.className = "col-xl";
+    cityCardContainer.className = "col-xl-6";
     //Set up transition properties
     cityCardContainer.style.transitionDuration = "500ms";
     cityCardContainer.style.transitionProperty ="opacity"
