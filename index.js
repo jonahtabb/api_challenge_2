@@ -289,13 +289,14 @@ async function createCityDataCard(n){
 
     //Process AQI Data (Air Quality Index)
     let aqi = (n.data.current.pollution.aqius).toFixed(1);
-    let aqiPercent = Math.floor((aqi/300) * 100);
+    let aqiPercent = Math.floor((aqi/150) * 100);
     let aqiPercentString = `${aqiPercent}%`;
     weatherDataArray.push(new weatherDataObject("aqi", "Air Quality Index", aqi, aqiPercentString));
 
     //Process Temp Data
     let tempFar = (((n.data.current.weather.tp) * (9/5)) + 32).toFixed(1) ;
-    let tempFarPercentString= `${tempFar}%`
+    let tempFarPercent = Math.floor((tempFar/110) * 100);
+    let tempFarPercentString= `${tempFarPercent}%`
     weatherDataArray.push(new weatherDataObject("temp", "Temp (F)", tempFar, tempFarPercentString));
 
     //Process Humidity Data
