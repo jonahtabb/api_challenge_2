@@ -69,6 +69,7 @@ const mainCardsContainer = document.getElementById("main-cards-container");
 const stateSelectorField = document.getElementById("select-state");
 const citySelectorField = document.getElementById("select-city");
 const addCityButton = document.getElementById("add-city-button");
+const errorBarContainer= document.getElementById("error-bar-container");
 
 //Set initial state of selector fields
 stateSelectorField.disabled = true;
@@ -82,6 +83,35 @@ let selectedCityName = "" ; //Currently selected City name
 citySelectorField.onchange = setSelectedCityName ;
 stateSelectorField.onchange = getCurrentState ;  //Note to self: don't use () for 'onchange' because we want reference the function but not immediately call it when it initially gets read. These type of functions pass event info into the function.
 addCityButton.onclick = getCityData;
+
+//Load Error Display bar on page load!
+function errorDisplayBar (error) {
+
+    if (document.getElementById("error-display-bar") != null ){
+        let errorDisplayBar = document.getElementById("error-display-bar");
+        let errorText = document.getElementById("error-display-text");
+        errorText.innerText = (error);
+        console.log(errorText);
+        errorDisplayBar.style.display = "flex";
+        setTimeout(() => {errorDisplayBar.style.opacity = "1"}, 100 );
+        setTimeout(() => {errorDisplayBar.style.opacity = "0"}, 4000);
+        setTimeout(() => {errorDisplayBar.style.display = "none"}, 5000);
+        
+    } else {
+        let errorDisplayBar = document.createElement('div');
+        errorDisplayBar.className = "col-xxl";
+        errorDisplayBar.id = "error-display-bar";
+        let errorText = document.createElement('p');
+        errorText.id ="error-display-text";
+        errorText.innerText = "Sorry, we have encountered an error!  Please try refreshing the page."
+        errorBarContainer.appendChild(errorDisplayBar);
+        errorDisplayBar.appendChild(errorText);
+        console.log("Error Bar Has Been Created");
+    }
+}
+
+//Create the error display bar on load
+errorDisplayBar();
 
 //Get the supported states on page load! Commented out in favor of the debugging function to load the static array of states.
 //getSupportedStates()
@@ -119,7 +149,11 @@ function addStatesToList(arr) {
 function getCurrentState(e) {
     selectedStateName = e.target.value;
     if(selectedStateName !== "Choose..."){
-    getSupportedCities(selectedStateName);
+        citySelectorField.disabled = true;
+        getSupportedCities(selectedStateName);
+    } else{
+        citySelectorField.disabled = true;
+        addCityButton.disabled = true;
     }
 }
 
@@ -128,7 +162,6 @@ async function getSupportedCities(state) {
     let resCities = await fetch(`${baseURL}cities?state=${state}&country=USA&key=${apiKey}`);
     let resData = await resCities.json();
     let supportedCities = resData.data;
-    // console.log(supportedCities);
     addCitiesToList(supportedCities);
 }
 
@@ -161,7 +194,8 @@ async function getCityData () {
             createCityDataCard(cityData);
             
         } else {
-            alert("You've already added this city to your dashboard!")
+            errorDisplayBar(`You have already added ${selectedCityName}, ${selectedStateName} to your dashboard!`)
+            // alert("You've already added this city to your dashboard!")
         }
 }
 
@@ -183,7 +217,7 @@ async function createCityDataCard(n){
     let cityCardContainer = document.createElement('div');
     cityCardContainer.className = "col-xl";
     //Set up transition properties
-    cityCardContainer.style.transitionDuration = "499ms";
+    cityCardContainer.style.transitionDuration = "500ms";
     cityCardContainer.style.transitionProperty ="opacity"
     cityCardContainer.style.opacity="0" ;
 
@@ -225,10 +259,6 @@ async function createCityDataCard(n){
     // let removeCardButton = document.createElement('div');
     // removeCardButton.className = "btn btn-secondary remove-card" ;
     // removeCardButtons = document.getElementsByClassName("remove-card");
-    
-    // //Create City/State Title and add to the city card
-    // let cityTitle = document.createElement('h2');
-    // cityTitle.innerText = `${n.data.city}, ${n.data.state}`;
 
     //Append card to static dom element
     mainCardsContainer.prepend(cityCardContainer);
@@ -264,7 +294,7 @@ async function createCityDataCard(n){
     //Process Temp Data
     let tempFar = (((n.data.current.weather.tp) * (9/5)) + 32).toFixed(1) ;
     let tempFarPercentString= `${tempFar}%`
-    weatherDataArray.push(new weatherDataObject("temp", "Temperature (F)", tempFar, tempFarPercentString));
+    weatherDataArray.push(new weatherDataObject("temp", "Temp (F)", tempFar, tempFarPercentString));
 
     //Process Humidity Data
     let humidity = n.data.current.weather.hu ;
@@ -292,7 +322,7 @@ async function createCityDataCard(n){
         }
         //Create Data flex box
         let innerDataFlex = document.createElement('div');
-        innerDataFlex.className = "col d-flex flex-column h-100";
+        innerDataFlex.className = "col d-flex flex-column justify-content-between h-100";
 
         //Create the data point Title
         let dataHeader = document.createElement('p');

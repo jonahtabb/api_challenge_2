@@ -3,12 +3,8 @@ font-family: 'Antonio', sans-serif;
 Paragraph Font:
 font-family: 'ABeeZee', sans-serif;*/
 
-.form-select:disabled{
-    background-color: rgb(219, 225, 236);
-}
-
 body{
-    font-family: 'Roboto Condensed', sans-serif;
+    font-family: 'Open Sans', 'Roboto Condensed', sans-serif;
     color: #4357AD;
     line-height: 1;
 }
@@ -25,6 +21,27 @@ h2{
 }
 h3{
     font-family: 'Bebas Neue', sans-serif;
+}
+
+#error-display-bar{
+    display:none;
+    opacity: 0;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(193,220,255);
+    border-radius: 10px;
+    text-align: center;
+    margin: auto;
+    margin-bottom: 6px;
+    transition: all 1s ease-in-out;
+
+}
+
+#error-display-text{
+    color: #4357AD;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    margin: auto;
 }
 
 .choose-container-outer{
@@ -51,6 +68,10 @@ h3{
     border-radius: 0px 0px 10px 10px;
 }
 
+.form-select:disabled{
+    background-color: rgb(219, 225, 236);
+}
+
 .add-city-button-col{
     display: flex;
     justify-content:flex-end;
@@ -75,12 +96,11 @@ h3{
 
 .card-header-custom{
     padding: 2px 0px 0px 5px;
-    font-size: 4.5vw;
+    font-size: 2rem;
 }
 
 .card-custom{
     background: #EBF3FF;
-    /* border: 1px solid #4357AD; */
     box-shadow: 0px 4px 4px rgba(0, 24, 60, 0.2);
     border-radius: 10px;
     height: 200px;
@@ -126,9 +146,11 @@ h3{
 }
 
 .data-header-text {
+    font-family: 'Open Sans Condensed', 'Roboto Condensed', sans-serif;
+    font-size: .75rem;
     color: #EBF3FF;
     text-align: center;
-    font-weight: 500;
+    font-weight: 600;
     padding-top:10px ;
 }
 
@@ -155,22 +177,20 @@ h3{
 /* Inner Bar Color Custom Classes*/
 
 .visual-bar-inside.aqi{
-    background-color: rgba(213, 41, 65, 0.35);
+    background-color: rgba(213, 41, 65, 0.45);
 }
 
 .visual-bar-inside.temperature{
-    background-color: rgba(51, 101, 138, 0.35);
+    background-color: rgba(51, 101, 138, 0.45);
 }
 
 .visual-bar-inside.humidity{
-    background-color: rgba(113, 97, 239, 0.35);
+    background-color: rgba(113, 97, 239, 0.45);
 }
 
 .visual-bar-inside.windSpeed{
-    background-color: rgba(101, 130, 94, 0.35);
+    background-color: rgba(101, 130, 94, 0.45);
 }
-
-
 
 .data-circle{
     display: flex;
@@ -185,9 +205,9 @@ h3{
 }
 
 .data-text{
-    font-family: 'Roboto Condensed', sans-serif;
+    font-family: 'Open Sans Condensed', 'Roboto Condensed', sans-serif;
     font-size: 24px;
-    font-weight: bold;
+    font-weight: 700;
     color: #D52941;
     margin: 0;
     
@@ -211,8 +231,6 @@ h3{
     color: rgba(101, 130, 94, 1);
 }
 
-
-
 .remove-card{
     position:absolute;
     top: 4%;
@@ -221,7 +239,7 @@ h3{
     border: none;
     width: 20px;
     height: 20px;
-    background-image: url("/assets/close-icon-blue-1.svg");
+    background-image: url("/assets/close-icon-blue-3.svg");
     background-color: transparent;
     background-position: center;
     background-size:contain;
