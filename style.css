@@ -148,8 +148,11 @@ h3{
     width: 100%;
     height: 50%;
     bottom: 0;
+    background-color: blueviolet;
 
 } 
+
+/* Inner Bar Color Custom Classes*/
 
 .visual-bar-inside.aqi{
     background-color: rgba(213, 41, 65, 0.35);
@@ -162,6 +165,12 @@ h3{
 .visual-bar-inside.humidity{
     background-color: rgba(113, 97, 239, 0.35);
 }
+
+.visual-bar-inside.windSpeed{
+    background-color: rgba(101, 130, 94, 0.35);
+}
+
+
 
 .data-circle{
     display: flex;
@@ -182,6 +191,24 @@ h3{
     color: #D52941;
     margin: 0;
     
+}
+
+/* Data Circle Text Color*/
+
+.data-text.aqi{
+    color:rgba(213, 41, 65, 1);
+}
+
+.data-text.temperature{
+    color: rgba(51, 101, 138, 1);
+}
+
+.data-text.humidity{
+    color: rgba(113, 97, 239, 1);
+}
+
+.data-text.windSpeed{
+    color: rgba(101, 130, 94, 1);
 }
 
 

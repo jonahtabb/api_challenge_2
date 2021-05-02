@@ -159,7 +159,7 @@ async function getCityData () {
             let resCity = await fetch(`${baseURL}city?city=${selectedCityName}&state=${selectedStateName}&country=USA&key=${apiKey}`);
             cityData = await resCity.json();
             createCityDataCard(cityData);
-            photoFetcher(`${selectedCityName}${selectedStateName}`);
+            
         } else {
             alert("You've already added this city to your dashboard!")
         }
@@ -167,15 +167,83 @@ async function getCityData () {
 
 //Initialize a function to remove a card when the remove card button is clicked
 function removeCard (e){
-    let currentCard = e.target.parentNode.parentNode;
-    let cardsContainer = e.target.parentNode.parentNode.parentNode;
+    let currentCard = e.target.parentNode.parentNode.parentNode.parentNode;
+    let cardsContainer = e.target.parentNode.parentNode.parentNode.parentNode.parentNode;
     currentCard.style.opacity = '0';
     setTimeout(function(){cardsContainer.removeChild(currentCard)}, 500)
     console.log("Remove Card Has Been Triggered for " + currentCard);
     // cardsContainer.removeChild(currentCard);
 }
 
-function createCityDataCard(n){
+async function createCityDataCard(n){
+    let fetchedPhoto = await photoFetcher(`${selectedCityName}${selectedStateName}`);
+    console.log(fetchedPhoto);
+    console.log(n);
+    //Create the container for each card
+    let cityCardContainer = document.createElement('div');
+    cityCardContainer.className = "col-xl";
+    //Set up transition properties
+    cityCardContainer.style.transitionDuration = "499ms";
+    cityCardContainer.style.transitionProperty ="opacity"
+    cityCardContainer.style.opacity="0" ;
+
+    //Create the outer card for the city
+    let cityCard = document.createElement('div');
+    cityCard.className = "row card-custom mx-auto h-100";
+
+    //Set custom dom attributes for city and state to reference on events.  These are used to easily access the cards from anywhere in the file using query selector using a query like this document.querySelectorAll(`div[cityName = "${selectedCityName}"]`
+    cityCard.setAttribute("stateName", "" + n.data.state + "") ;
+    cityCard.setAttribute("cityName", "" + n.data.city + "") ;
+
+    //Create main left column
+    let cityCardColA = document.createElement('div');
+    cityCardColA.className = "col-7 px-0 pe-1"
+    //Create main left column contents
+    let cityCardColA1 = document.createElement('h3');
+    cityCardColA1.className = "card-header-custom";
+    cityCardColA1.innerText = `${n.data.city}, ${n.data.state}`;
+    let cityCardColA2 = document.createElement('div');
+    cityCardColA2.className = "col";
+    let cityCardColA2A = document.createElement('div');
+    cityCardColA2A.className = "row mx-auto h-100";
+
+    //Create main right column
+    let cityCardColB = document.createElement('div');
+    cityCardColB.className = "col px-0";
+    //Create main right column contents
+    let cityCardColB1 = document.createElement('div');
+    cityCardColB1.className = "card-image-container";
+
+    cityCardColB1.setAttribute("style", "background-image: url("+ fetchedPhoto +")")
+ 
+    let removeCardButton = document.createElement('div');
+    removeCardButton.className = "btn btn-secondary remove-card";
+
+    removeCardButtons = document.getElementsByClassName("remove-card")
+
+    // //Create remove card button
+    // let removeCardButton = document.createElement('div');
+    // removeCardButton.className = "btn btn-secondary remove-card" ;
+    // removeCardButtons = document.getElementsByClassName("remove-card");
+    
+    // //Create City/State Title and add to the city card
+    // let cityTitle = document.createElement('h2');
+    // cityTitle.innerText = `${n.data.city}, ${n.data.state}`;
+
+    //Append card to static dom element
+    mainCardsContainer.prepend(cityCardContainer);
+        cityCardContainer.appendChild(cityCard);
+            cityCard.appendChild(cityCardColA);
+                cityCardColA.appendChild(cityCardColA1);
+                cityCardColA.appendChild(cityCardColA2);
+                    cityCardColA2.appendChild(cityCardColA2A);
+            cityCard.appendChild(cityCardColB);
+                cityCardColB.appendChild(cityCardColB1);
+                    cityCardColB1.appendChild(removeCardButton);
+
+    //Create an onclick trigger for this card
+    removeCardButton.onclick = removeCard;
+
     //Initialize data points array
     let weatherDataArray = [];
     function weatherDataObject (abbrev, name, dataPoint, percentString, city, state) {
@@ -186,43 +254,6 @@ function createCityDataCard(n){
         this.city = city;
         this.state = state;
     }
-    console.log(n);
-    //Create the container for each card
-    let cityCardContainer = document.createElement('div');
-    cityCardContainer.className = "col-md g-4 card-container";
-    //Set up transition properties
-    cityCardContainer.style.transitionDuration = "499ms";
-    cityCardContainer.style.transitionProperty ="opacity"
-    cityCardContainer.style.opacity="0" ;
-
-    //Create the outer card for the city
-    let cityCard = document.createElement('div');
-    cityCard.className = "card p-3";
-
-    
-    //Set custom dom attributes for city and state to reference on events.  These are used to easily access the cards from anywhere in the file using query selector using a query like this document.querySelectorAll(`div[cityName = "${selectedCityName}"]`
-    cityCard.setAttribute("stateName", "" + n.data.state + "") ;
-    cityCard.setAttribute("cityName", "" + n.data.city + "") ;
-
-    removeCardButtons = document.getElementsByClassName("remove-card")
-
-    //Create remove card button
-    let removeCardButton = document.createElement('div');
-    removeCardButton.className = "btn btn-secondary remove-card" ;
-    removeCardButtons = document.getElementsByClassName("remove-card");
-    
-    //Create City/State Title and add to the city card
-    let cityTitle = document.createElement('h2');
-    cityTitle.innerText = `${n.data.city}, ${n.data.state}`;
-
-    //Append card to static dom element
-    mainCardsContainer.prepend(cityCardContainer);
-    cityCardContainer.appendChild(cityCard);
-    cityCard.appendChild(cityTitle);
-    cityCard.appendChild(removeCardButton);
-
-    //Create an onclick trigger for this card
-    removeCardButton.onclick = removeCard;
 
     //Process AQI Data (Air Quality Index)
     let aqi = (n.data.current.pollution.aqius).toFixed(1);
@@ -233,51 +264,89 @@ function createCityDataCard(n){
     //Process Temp Data
     let tempFar = (((n.data.current.weather.tp) * (9/5)) + 32).toFixed(1) ;
     let tempFarPercentString= `${tempFar}%`
-
     weatherDataArray.push(new weatherDataObject("temp", "Temperature (F)", tempFar, tempFarPercentString));
+
+    //Process Humidity Data
+    let humidity = n.data.current.weather.hu ;
+    let humidityString = `${humidity}%` ;
+    weatherDataArray.push(new weatherDataObject ("humidity", "Humidity", humidity, humidityString));
+
+    //Process Wind Speed Data
+    let windSpeed = n.data.current.weather.ws ;
+    let windSpeedPercent = Math.floor((windSpeed/50) * 100);
+    let windSpeedString = `${windSpeedPercent}%`;
+    weatherDataArray.push(new weatherDataObject ("windSpeed", "Wind Speed", windSpeed, windSpeedString));
 
     //Iterate through data and create dom elements
 
     weatherDataArray.forEach(weatherDataObject => {
-        //Create the data point Title
-        let Title = document.createElement('h3');
-        Title.innerText = `${weatherDataObject.name}: ${weatherDataObject.dataPoint}`;
-
-        //Create the aqi bar container
-        let barContainer = document.createElement('div');
-        barContainer.className = "visual-bar-container";
-
-        //Set Inner Bar color
-        let barColor = "black"
+        let outerDataBox = document.createElement('div');
         if (weatherDataObject.abbrev == "aqi") {
-            if (weatherDataObject.dataPoint < 51) {barColor = "Green"}
-            else if (weatherDataObject.dataPoint < 101) {barColor = "Yellow"}
+            outerDataBox.className = "col p-0 air-quality-index-box";
+        } else if (weatherDataObject.abbrev == "temp") {
+            outerDataBox.className = "col p-0 temperature-box";
+        } else if (weatherDataObject.abbrev == "humidity") {
+            outerDataBox.className = "col p-0 humidity-box";
+        } else if (weatherDataObject.abbrev == "windSpeed"){
+            outerDataBox.className = "col p-0 wind-box";
         }
-        else if (weatherDataObject.abbrev == "temp") {
-            barColor = "#ffa661"
+        //Create Data flex box
+        let innerDataFlex = document.createElement('div');
+        innerDataFlex.className = "col d-flex flex-column h-100";
 
-        }
+        //Create the data point Title
+        let dataHeader = document.createElement('p');
+        dataHeader.className = "data-header-text"
+        dataHeader.innerText = `${weatherDataObject.name}`;
 
-        //Create the inner bar
-        let barInner = document.createElement('div');
-        barInner.className = "visual-bar-inside";
-        barInner.style.width = weatherDataObject.percentString;
-        barInner.style.backgroundColor = barColor;
+        //Create Data visual components
+        let dataVisualContainer = document.createElement('div');
+        dataVisualContainer.className = "row mx-auto align-center";
+
+        let dataBarOuterContainer = document.createElement('div');
+        dataBarOuterContainer.className = "col-xs py-2 px-0";
+        let dataBarContainer = document.createElement('div');
+        dataBarContainer.className = "visual-bar-container";
+        let dataBarInner = document.createElement('div');
+        dataBarInner.className = "visual-bar-inside" 
+        
+        //Assign custom color classes
+        dataColorClass = (weatherDataObject.abbrev == "aqi"?"aqi"
+                        : weatherDataObject.abbrev == "temp"?"temperature"
+                        : weatherDataObject.abbrev == "humidity"?"humidity"
+                        : "windSpeed")
+        dataBarInner.classList.add(dataColorClass) ;
+        dataBarInner.style.height = `${weatherDataObject.percentString}`;
+        
+        let dataCircleOuterContainer = document.createElement('div');
+        dataCircleOuterContainer.className = "col-xs py-2 px-0";
+        let dataCircle = document.createElement('div');
+        dataCircle.className = "data-circle";
+        let dataText = document.createElement('div');
+        dataText.className = "data-text";
+        dataText.innerText = `${Math.floor(weatherDataObject.dataPoint)}`;
+        dataText.classList.add(dataColorClass);
 
         //Add all the dom elements to the page
-        cityCard.appendChild(Title);
-        cityCard.appendChild(barContainer);
-        barContainer.appendChild(barInner);
-
+        cityCardColA2A.appendChild (outerDataBox);
+            outerDataBox.appendChild(innerDataFlex);
+                innerDataFlex.appendChild(dataHeader);
+                innerDataFlex.appendChild(dataVisualContainer);
+                    dataVisualContainer.appendChild(dataBarOuterContainer);
+                        dataBarOuterContainer.appendChild(dataBarContainer);
+                            dataBarContainer.appendChild(dataBarInner);
+                    dataVisualContainer.appendChild(dataCircleOuterContainer);
+                        dataCircleOuterContainer.appendChild(dataCircle);
+                            dataCircle.appendChild(dataText);
         //Fade In the Card
         setTimeout(() => cityCardContainer.style.opacity="1", 200) ;
-
     });
 }
 
 //Get search for cities by name and then fetch a photo if one exists
 
 async function photoFetcher (citySearch) {
+    let fetchedPhoto
     let removeSpaces = await citySearch.replace(/\s+/g, '') ;
     let results = await fetch(`https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=${removeSpaces}&inputtype=textquery&fields=photos&key=${gPlaceApiKey}`)
 
@@ -292,12 +361,12 @@ async function photoFetcher (citySearch) {
         let photoResult = await fetch(`https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${photoReference}&key=${gPlaceApiKey}`)
 
         console.log(photoResult.url);
-        let imageSample = document.createElement('img');
-        imageSample.src = photoResult.url ;
-        mainCardsContainer.appendChild(imageSample);
+        fetchedPhoto = photoResult.url;
     } else {
         console.log(`Google Maps Api probably does not contain a photo of this place.  Status of returned request is "${resultsJson.status}"`);
     }
+    return fetchedPhoto;
+    
 }
 
 
