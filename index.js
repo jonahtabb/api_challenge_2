@@ -215,7 +215,7 @@ async function createCityDataCard(n){
     let cityCardContainer = document.createElement('div');
     cityCardContainer.className = "col-xl-6";
     //Set up transition properties
-    cityCardContainer.style.transitionDuration = "500ms";
+    cityCardContainer.style.transitionDuration = "700ms";
     cityCardContainer.style.transitionProperty ="opacity"
     cityCardContainer.style.opacity="0" ;
 
@@ -372,7 +372,7 @@ async function createCityDataCard(n){
                         dataCircleOuterContainer.appendChild(dataCircle);
                             dataCircle.appendChild(dataText);
         //Fade In the Card
-        setTimeout(() => cityCardContainer.style.opacity="1", 200) ;
+        setTimeout(() => cityCardContainer.style.opacity="1", 50) ;
     });
 }
 
