@@ -65,7 +65,7 @@ const btn = document.querySelector("#dark-theme-button");
 const staticDarkThemeElements = document.querySelectorAll(".choose-container-upper, .form-select, #add-city-button:hover");
 console.log(staticDarkThemeElements);
 btn.addEventListener("click", function () {
-    let dynamicDarkThemeElements = document.querySelectorAll(".card-custom");
+    let dynamicDarkThemeElements = document.querySelectorAll(".card-custom, .remove-card");
     staticDarkThemeElements.forEach(node => node.classList.toggle("dark-theme"));
     dynamicDarkThemeElements.forEach(node => node.classList.toggle("dark-theme"));
     document.body.classList.toggle("dark-theme");
@@ -265,16 +265,14 @@ async function createCityDataCard(n){
     if(fetchedPhoto.includes("no-image-avail")){
         cityCardColB1.setAttribute("style", "background-size: contain")
     } 
- 
+    //Create Remove Card Button
     let removeCardButton = document.createElement('button');
     removeCardButton.className = "btn btn-secondary remove-card";
-
     removeCardButtons = document.getElementsByClassName("remove-card")
-
-    // //Create remove card button
-    // let removeCardButton = document.createElement('div');
-    // removeCardButton.className = "btn btn-secondary remove-card" ;
-    // removeCardButtons = document.getElementsByClassName("remove-card");
+    if(document.body.classList.contains("dark-theme")){
+        removeCardButton.classList.toggle("dark-theme")
+    }
+    
 
     //Append card to static dom element
     mainCardsContainer.prepend(cityCardContainer);

@@ -283,6 +283,9 @@ h3{
     background-repeat: no-repeat;
     transition-property: transform;
 }
+.remove-card.dark-theme{
+    background-image: url("/assets/close-icon-blue-1.svg");
+}
 
 .remove-card:hover {
     transform: scale(1.2, 1.2);
