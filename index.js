@@ -278,13 +278,15 @@ async function createCityDataCard(n){
 
     //Initialize data points array
     let weatherDataArray = [];
-    function weatherDataObject (abbrev, name, dataPoint, percentString, city, state) {
-        this.abbrev = abbrev;
-        this.name = name;
-        this.dataPoint = dataPoint;
-        this.percentString = percentString;
-        this.city = city;
-        this.state = state;
+    class weatherDataObject {
+        constructor (abbrev, name, dataPoint, percentString, city, state) {
+            this.abbrev = abbrev;
+            this.name = name;
+            this.dataPoint = dataPoint;
+            this.percentString = percentString;
+            this.city = city;
+            this.state = state;
+        }
     }
 
     //Process AQI Data (Air Quality Index)
