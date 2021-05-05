@@ -17,11 +17,19 @@
 
 <body>
 	<div class="container my-3">
-	<!-- Heading Elements -->
 		<div class="container">
-			<h1>Weather Watch</h1>
+		<!-- Heading Elements -->
+			<div id = "title-container">
+				<h1>Weather Watch</h1>
+				<!-- <button type="button" id="dark-theme-button">Dark Mode Toggle</button> -->
+				<div class="form-check form-switch">
+					<label class="form-check-label py-1" for="dark-theme-button">Dark Mode</label>
+					<input class="form-check-input" type="checkbox" id="dark-theme-button">
+				</div>
+			</div>
 			<h2>Get current weather and pollution info from U.S. cities.</h2>
-	<!-- Form Elements -->
+			
+		<!-- Form Elements -->
 			<form class="row g-3 my-3 needs-validation">
 				<!-- State Selector -->
 				<div class="col-md-3 position-relative">

@@ -3,10 +3,17 @@ font-family: 'Antonio', sans-serif;
 Paragraph Font:
 font-family: 'ABeeZee', sans-serif;*/
 
+
+
 body{
     font-family: 'Open Sans', 'Roboto Condensed', sans-serif;
     color: #4357AD;
     line-height: 1;
+    background-color: white;
+}
+body.dark-theme{
+    background-color: #161d3b;
+    color: #ebf3ff;
 }
 
 p{
@@ -16,6 +23,7 @@ h1{
     font-size: 3.5rem ;
     font-family: 'Bebas Neue', sans-serif;
 }
+
 h2{
     font-size: 1.5rem;
 }
@@ -34,7 +42,6 @@ h3{
     margin: auto;
     margin-bottom: 6px;
     transition: all 1s ease-in-out;
-
 }
 
 #error-display-text{
@@ -44,8 +51,14 @@ h3{
     margin: auto;
 }
 
+#title-container{
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+
+}
+
 .choose-container-outer{
-    background-color: #EBF3FF;
     box-shadow: 0px 4px 4px rgba(0, 24, 60, 0.2);
     border-radius: 10px;
 }
@@ -55,6 +68,9 @@ h3{
     border-radius: 10px 10px 0px 0px;
     padding: 10px 10px 3px 10px;
     /* height: 50%; */
+}
+.choose-container-upper.dark-theme{
+    background-color: #4357ad;
 }
 
 .form-label{
@@ -68,10 +84,18 @@ h3{
     border:none;
     border-radius: 0px 0px 10px 10px;
 }
+.form-select.dark-theme{
+    background-color: #4b60be;
+    color: #ebf3ff;
+}
 
 .form-select:disabled{
     background-color: rgb(219, 225, 236);
     color: grey;
+}
+.form-select:disabled.dark-theme{
+    background-color: #4c5992;
+    color: #c7ccd1;
 }
 
 .dropdown-menu{
@@ -99,6 +123,9 @@ h3{
     background-color: #EBF3FF;
     border: 2px solid #4357AD;
 }
+#add-city-button:hover.dark-theme{
+    background-color: #4b60be;
+}
 
 .card-header-custom{
     padding: 1rem 0px 0px 1rem;
@@ -106,11 +133,14 @@ h3{
 }
 
 .card-custom{
-    background: #EBF3FF;
+    background-color: #EBF3FF;
     box-shadow: 0px 4px 4px rgba(0, 24, 60, 0.2);
     border-radius: 10px;
     height: 200px;
     /* padding: 0; */
+}
+.card-custom.dark-theme{
+    background-color: #4b60be;
 }
 
 .data-boxes-row{

@@ -60,6 +60,17 @@ const supportedStatesStandIn = [
 const baseURL = "http://api.airvisual.com/v2/"
 const apiKey = "a1d8a74d-2f39-4e75-a89f-70fa6578cbd9"
 
+//Dark Mode Toggle
+const btn = document.querySelector("#dark-theme-button");
+const staticDarkThemeElements = document.querySelectorAll(".choose-container-upper, .form-select, #add-city-button:hover");
+console.log(staticDarkThemeElements);
+btn.addEventListener("click", function () {
+    let dynamicDarkThemeElements = document.querySelectorAll(".card-custom");
+    staticDarkThemeElements.forEach(node => node.classList.toggle("dark-theme"));
+    dynamicDarkThemeElements.forEach(node => node.classList.toggle("dark-theme"));
+    document.body.classList.toggle("dark-theme");
+}); //New card dark theme statement near line 233
+
 //Google Places API
 const gPlaceApiKey= "AIzaSyBgiBdaU5dfZ9PE4O9gfHKMlpLvDGFYIuU"
 const gPlaceBaseURL = "https://maps.googleapis.com/maps/api/place/"
@@ -222,6 +233,9 @@ async function createCityDataCard(n){
     //Create the outer card for the city
     let cityCard = document.createElement('div');
     cityCard.className = "row card-custom mx-auto h-100";
+    if(document.body.classList.contains("dark-theme")){
+        cityCard.classList.toggle("dark-theme")
+    }
 
     //Set custom dom attributes for city and state to reference on events.  These are used to easily access the cards from anywhere in the file using query selector using a query like this document.querySelectorAll(`div[cityName = "${selectedCityName}"]`
     cityCard.setAttribute("stateName", "" + n.data.state + "") ;
@@ -252,7 +266,7 @@ async function createCityDataCard(n){
         cityCardColB1.setAttribute("style", "background-size: contain")
     } 
  
-    let removeCardButton = document.createElement('div');
+    let removeCardButton = document.createElement('button');
     removeCardButton.className = "btn btn-secondary remove-card";
 
     removeCardButtons = document.getElementsByClassName("remove-card")
@@ -357,9 +371,9 @@ async function createCityDataCard(n){
         dataCircleOuterContainer.className = "col-xs py-2 px-0";
         let dataCircle = document.createElement('div');
         dataCircle.className = "data-circle";
-        let dataText = document.createElement('div');
+        let dataText = document.createElement('p');
         dataText.className = "data-text";
-        dataText.innerText = `${Math.floor(weatherDataObject.dataPoint)}`;
+        dataText.innerHTML = `${Math.floor(weatherDataObject.dataPoint)}`;
         dataText.classList.add(dataColorClass);
 
         //Add all the dom elements to the page
@@ -373,6 +387,7 @@ async function createCityDataCard(n){
                     dataVisualContainer.appendChild(dataCircleOuterContainer);
                         dataCircleOuterContainer.appendChild(dataCircle);
                             dataCircle.appendChild(dataText);
+            
         //Fade In the Card
         setTimeout(() => cityCardContainer.style.opacity="1", 50) ;
     });
