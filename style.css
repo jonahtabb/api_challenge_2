@@ -17,8 +17,28 @@ body.dark-theme{
 }
 
 p{
-    color:hsl(196,40%,11%);
+    color:#4357ad;
 }
+p.dark-theme{
+    color: #ebf3ff;
+}
+
+a{
+    color:#4357ad;
+    font-weight: 700;
+}
+a.dark-theme{
+    color: #ebf3ff;
+}
+a:hover{
+    color:#313f7e;
+}
+a:hover.dark-theme{
+    color: #d5e6ff;
+    font-weight: 700;
+}
+
+
 h1{
     font-size: 3.5rem ;
     font-family: 'Bebas Neue', sans-serif;

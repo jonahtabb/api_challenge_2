@@ -62,7 +62,7 @@ const apiKey = "a1d8a74d-2f39-4e75-a89f-70fa6578cbd9"
 
 //Dark Mode Toggle
 const btn = document.querySelector("#dark-theme-button");
-const staticDarkThemeElements = document.querySelectorAll(".choose-container-upper, .form-select, #add-city-button:hover");
+const staticDarkThemeElements = document.querySelectorAll(".choose-container-upper, .form-select, #add-city-button:hover, p, a, a.hover");
 console.log(staticDarkThemeElements);
 btn.addEventListener("click", function () {
     let dynamicDarkThemeElements = document.querySelectorAll(".card-custom, .remove-card");

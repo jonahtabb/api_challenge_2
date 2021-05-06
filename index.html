@@ -11,15 +11,17 @@
 	<link rel="stylesheet" href="style.css">
 	<!-- Font Stylesheets -->
 	<link rel="preconnect" href="https://fonts.gstatic.com">
-	<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Roboto+Condensed:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Open+Sans+Condensed:ital,wght@0,300;0,700;1,300&family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;1,300;1,400;1,600;1,700;1,800&display=swap" rel="stylesheet">
+	<link
+		href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Roboto+Condensed:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Open+Sans+Condensed:ital,wght@0,300;0,700;1,300&family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;1,300;1,400;1,600;1,700;1,800&display=swap"
+		rel="stylesheet">
 	<title>IQ Air API</title>
 </head>
 
 <body>
 	<div class="container my-3">
 		<div class="container">
-		<!-- Heading Elements -->
-			<div id = "title-container">
+			<!-- Heading Elements -->
+			<div id="title-container">
 				<h1>Weather Watch</h1>
 				<!-- <button type="button" id="dark-theme-button">Dark Mode Toggle</button> -->
 				<div class="form-check form-switch">
@@ -28,8 +30,8 @@
 				</div>
 			</div>
 			<h2>Get current weather and pollution info from U.S. cities.</h2>
-			
-		<!-- Form Elements -->
+
+			<!-- Form Elements -->
 			<form class="row g-3 my-3 needs-validation">
 				<!-- State Selector -->
 				<div class="col-md-3 position-relative">
@@ -70,7 +72,17 @@
 			<div class="row" id="error-bar-container"></div>
 			<!-- Card Elements -->
 			<div id="main-cards-container" class="row g-3">
-				<!-- Javascript dynamically creates cards in here -->
+				<!-- About This Project -->
+				<div class="col-lg-6" style="transition-duration: 700ms; transition-property: opacity; opacity: 1;">
+					<div class="row card-custom mx-auto h-100">
+						<div class="col px-0 pe-1">
+							<h3 class="card-header-custom px-4">About This Project</h3>
+							<p class="px-4 lh-sm">This project uses Javascript to fetch data and images from 2 APIs to dynamically generate cards with pollution, weather data, and photos from U.S. cities. Bootstrap enabled me efficiently implement a responsive layout, while using custom CSS Styling to implement my original design from Figma. You can view the source code and README for the project <a href ="https://github.com/jonahtabb/api_challenge_2" target ="_blank">here</a>.<br><br> Thank you for stopping by :)   Jonah </p>
+							</div>
+						</div>
+					</div>
+					<!-- Javascript dynamically creates cards in here -->
+				</div>
 			</div>
 		</div>
 	</div>
