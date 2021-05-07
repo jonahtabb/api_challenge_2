@@ -57,7 +57,7 @@ const supportedStatesStandIn = [
      ]
 
 //Set Constants
-const baseURL = "http://api.airvisual.com/v2/"
+const baseURL = "https://api.airvisual.com/v2/"
 const apiKey = "a1d8a74d-2f39-4e75-a89f-70fa6578cbd9"
 
 //Dark Mode Toggle
