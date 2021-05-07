@@ -90,7 +90,7 @@ addCityButton.disabled = true;
 let removeCardButtons = []; //Current list of cards displayed on the dom (Specifically, each card's 'remove card' button element)
 let selectedStateName = ""; //Currently selected State name
 let selectedCityName = ""; //Currently selected City name
-let selectedCityPhoto = ""; //Image Url for currently selected city
+let selectedCityPhoto = "assets/no-image-avail.svg"; //Image Url for currently selected city
 
 citySelectorField.onchange = setSelectedCityName;
 stateSelectorField.onchange = getCurrentState;  //Note to self: don't use () for 'onchange' because we want reference the function but not immediately call it when it initially gets read. These type of functions pass event info into the function.
@@ -265,9 +265,10 @@ async function createCityDataCard(n) {
     let cityCardColB1 = document.createElement('div');
     cityCardColB1.className = "card-image-container";
 
+    //Set Background Photo
     cityCardColB1.setAttribute("style", "background-image: url(" + selectedCityPhoto + ")")
     console.log(selectedCityPhoto)
-    if (selectedCityPhoto === undefined) {
+    if (selectedCityPhoto.includes("no-image-avail")) {
         cityCardColB1.setAttribute("style", "background-size: contain")
     }
         
@@ -401,29 +402,28 @@ async function createCityDataCard(n) {
 //Get search for cities by name and then fetch a photo if one exists
 
 async function photoFetcher (citySearch) {
-
-    let fetchedPhoto = "assets/no-image-avail.svg"
+    selectedCityPhoto = "assets/no-image-avail.svg"
     let removeSpaces = await citySearch.replace(/\s+/g, '') ;
-
     let tempMapDiv = document.createElement('div');
-
     let map = new google.maps.Map(tempMapDiv);
-
     let request = {
         query: removeSpaces,
         fields: ['name', 'place_id', 'photos'],
     };
-
     let service = await new google.maps.places.PlacesService(map);
-
     await service.findPlaceFromQuery(request, function (results, status) {
-        let placePhotoUrl
         if (status === google.maps.places.PlacesServiceStatus.OK) {
-            console.log(results);
-            placePhotoUrl = results[0].photos[0].getUrl();
-            console.log(placePhotoUrl);
-            fetchedPhoto = placePhotoUrl;
-            selectedCityPhoto = placePhotoUrl;
+            console.log(results)
+            if(!("photos" in results[0])){
+                selectedCityPhoto = "assets/no-image-avail.svg"
+                console.log(`Found a listing for ${selectedCityName}, ${selectedStateName}, however there are no photos available for this city`)}
+            else{
+                selectedCityPhoto = results[0].photos[0].getUrl();
+                console.log(`Yay! A photo was found for ${selectedCityName}, ${selectedStateName}`)
+            }
+        } else {
+            selectedCityPhoto = "assets/no-image-avail.svg"
+            console.log(`encountered an error when trying to retrieve information about ${SelectedCityName}, ${selectedStateName} from the Google Places Api`)
         }
     }
     )
