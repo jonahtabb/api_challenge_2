@@ -302,7 +302,7 @@ h3{
     border: none;
     width: 25px;
     height: 25px;
-    background-image: url("/assets/close-icon-blue-3.svg");
+    background-image: url("assets/close-icon-blue-3.svg");
     background-color: transparent;
     background-position: center;
     background-size:contain;
@@ -310,7 +310,7 @@ h3{
     transition-property: transform;
 }
 .remove-card.dark-theme{
-    background-image: url("/assets/close-icon-blue-1.svg");
+    background-image: url("assets/close-icon-blue-1.svg");
 }
 
 .remove-card:hover {

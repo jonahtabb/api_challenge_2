@@ -3,58 +3,58 @@
 //...so development and debugging can be done without hitting rate maximums
 // See lines ~ 86-88 to activate EITHER 'getSupportedStates()' or 'getSupportedStatesStandIn()'
 const supportedStatesStandIn = [
-    {state: "Alabama"},
-    {state: "Alaska"},
-    {state: "Arizona"},
-    {state: "Arkansas"},
-    {state: "California"},
-    {state: "Colorado"},
-    {state: "Connecticut"},
-    {state: "Delaware"},
-    {state: "Florida"},
-    {state: "Georgia"},
-    {state: "Hawaii"},
-    {state: "Idaho"},
-    {state: "Illinois"},
-    {state: "Indiana"},
-    {state: "Iowa"},
-    {state: "Kansas"},
-    {state: "Kentucky"},
-    {state: "Louisiana"},
-    {state: "Maine"},
-    {state: "Maryland"},
-    {state: "Massachusetts"},
-    {state: "Michigan"},
-    {state: "Minnesota"},
-    {state: "Mississippi"},
-    {state: "Missouri"},
-    {state: "Montana"},
-    {state: "Nebraska"},
-    {state: "Nevada"},
-    {state: "New Hampshire"},
-    {state: "New Jersey"},
-    {state: "New Mexico"},
-    {state: "New York"},
-    {state: "North Carolina"},
-    {state: "North Dakota"},
-    {state: "Ohio"},
-    {state: "Oklahoma"},
-    {state: "Oregon"},
-    {state: "Pennsylvania"},
-    {state: "Rhode Island"},
-    {state: "South Carolina"},
-    {state: "South Dakota"},
-    {state: "Tennessee"},
-    {state: "Texas"},
-    {state: "Utah"},
-    {state: "Vermont"},
-    {state: "Virginia"},
-    {state: "Washington"},
-    {state: "Washington, D.C."},
-    {state: "West Virginia"},
-    {state: "Wisconsin"},
-    {state: "Wyoming"}
-     ]
+    { state: "Alabama" },
+    { state: "Alaska" },
+    { state: "Arizona" },
+    { state: "Arkansas" },
+    { state: "California" },
+    { state: "Colorado" },
+    { state: "Connecticut" },
+    { state: "Delaware" },
+    { state: "Florida" },
+    { state: "Georgia" },
+    { state: "Hawaii" },
+    { state: "Idaho" },
+    { state: "Illinois" },
+    { state: "Indiana" },
+    { state: "Iowa" },
+    { state: "Kansas" },
+    { state: "Kentucky" },
+    { state: "Louisiana" },
+    { state: "Maine" },
+    { state: "Maryland" },
+    { state: "Massachusetts" },
+    { state: "Michigan" },
+    { state: "Minnesota" },
+    { state: "Mississippi" },
+    { state: "Missouri" },
+    { state: "Montana" },
+    { state: "Nebraska" },
+    { state: "Nevada" },
+    { state: "New Hampshire" },
+    { state: "New Jersey" },
+    { state: "New Mexico" },
+    { state: "New York" },
+    { state: "North Carolina" },
+    { state: "North Dakota" },
+    { state: "Ohio" },
+    { state: "Oklahoma" },
+    { state: "Oregon" },
+    { state: "Pennsylvania" },
+    { state: "Rhode Island" },
+    { state: "South Carolina" },
+    { state: "South Dakota" },
+    { state: "Tennessee" },
+    { state: "Texas" },
+    { state: "Utah" },
+    { state: "Vermont" },
+    { state: "Virginia" },
+    { state: "Washington" },
+    { state: "Washington, D.C." },
+    { state: "West Virginia" },
+    { state: "Wisconsin" },
+    { state: "Wyoming" }
+]
 
 //Set Constants
 const baseURL = "https://api.airvisual.com/v2/"
@@ -72,7 +72,7 @@ btn.addEventListener("click", function () {
 }); //New card dark theme statement near line 233
 
 //Google Places API
-const gPlaceApiKey= "AIzaSyBgiBdaU5dfZ9PE4O9gfHKMlpLvDGFYIuU"
+const gPlaceApiKey = "AIzaSyBgiBdaU5dfZ9PE4O9gfHKMlpLvDGFYIuU"
 const gPlaceBaseURL = "https://maps.googleapis.com/maps/api/place/"
 
 const NearestCityDataSlug = "nearest_city?key="
@@ -80,7 +80,7 @@ const mainCardsContainer = document.getElementById("main-cards-container");
 const stateSelectorField = document.getElementById("select-state");
 const citySelectorField = document.getElementById("select-city");
 const addCityButton = document.getElementById("add-city-button");
-const errorBarContainer= document.getElementById("error-bar-container");
+const errorBarContainer = document.getElementById("error-bar-container");
 
 //Set initial state of selector fields
 stateSelectorField.disabled = true;
@@ -88,32 +88,33 @@ citySelectorField.disabled = true;
 addCityButton.disabled = true;
 
 let removeCardButtons = []; //Current list of cards displayed on the dom (Specifically, each card's 'remove card' button element)
-let selectedStateName = "" ; //Currently selected State name
-let selectedCityName = "" ; //Currently selected City name
+let selectedStateName = ""; //Currently selected State name
+let selectedCityName = ""; //Currently selected City name
+let selectedCityPhoto = ""; //Image Url for currently selected city
 
-citySelectorField.onchange = setSelectedCityName ;
-stateSelectorField.onchange = getCurrentState ;  //Note to self: don't use () for 'onchange' because we want reference the function but not immediately call it when it initially gets read. These type of functions pass event info into the function.
+citySelectorField.onchange = setSelectedCityName;
+stateSelectorField.onchange = getCurrentState;  //Note to self: don't use () for 'onchange' because we want reference the function but not immediately call it when it initially gets read. These type of functions pass event info into the function.
 addCityButton.onclick = getCityData;
 
 //Load Error Display bar on page load!
-function errorDisplayBar (error) {
+function errorDisplayBar(error) {
 
-    if (document.getElementById("error-display-bar") != null ){
+    if (document.getElementById("error-display-bar") != null) {
         let errorDisplayBar = document.getElementById("error-display-bar");
         let errorText = document.getElementById("error-display-text");
         errorText.innerText = (error);
         console.log(errorText.innerText);
         errorDisplayBar.style.display = "flex";
-        setTimeout(() => {errorDisplayBar.style.opacity = "1"}, 100 );
-        setTimeout(() => {errorDisplayBar.style.opacity = "0"}, 4000);
-        setTimeout(() => {errorDisplayBar.style.display = "none"}, 5000);
-        
+        setTimeout(() => { errorDisplayBar.style.opacity = "1" }, 100);
+        setTimeout(() => { errorDisplayBar.style.opacity = "0" }, 4000);
+        setTimeout(() => { errorDisplayBar.style.display = "none" }, 5000);
+
     } else {
         let errorDisplayBar = document.createElement('div');
         errorDisplayBar.className = "col-xxl";
         errorDisplayBar.id = "error-display-bar";
         let errorText = document.createElement('p');
-        errorText.id ="error-display-text";
+        errorText.id = "error-display-text";
         errorText.innerText = "Sorry, we have encountered an error!  Please try refreshing the page."
         errorBarContainer.appendChild(errorDisplayBar);
         errorDisplayBar.appendChild(errorText);
@@ -125,23 +126,23 @@ errorDisplayBar();
 
 //Get the supported states on page load! Commented out in favor of the debugging function to load the static array of states.
 //getSupportedStates()
-getSupportedStatesStandIn() 
+getSupportedStatesStandIn()
 
-async function getSupportedStates () {
+async function getSupportedStates() {
     let resStates = await fetch(`${baseURL}states?country=USA&key=${apiKey}`);
     console.log(resStates);
     let resData = await resStates.json();
     console.log(resData);
-    if(resData.status == "fail"){
+    if (resData.status == "fail") {
         console.log(`Fetch failed.  Message: ${resData.data.message}`);
     } else {
-    let supportedStates = await resData.data;
-    addStatesToList(supportedStates);
+        let supportedStates = await resData.data;
+        addStatesToList(supportedStates);
     }
 }
 
 //This function is for debugging so we don't fetch the states each time
-function getSupportedStatesStandIn () {
+function getSupportedStatesStandIn() {
     addStatesToList(supportedStatesStandIn);
 }
 
@@ -159,10 +160,10 @@ function addStatesToList(arr) {
 function getCurrentState(e) {
     selectedStateName = e.target.value;
     console.log(`selected state is: ${selectedStateName}`);
-    if(selectedStateName !== "Choose..."){
+    if (selectedStateName !== "Choose...") {
         citySelectorField.disabled = true;
         getSupportedCities(selectedStateName);
-    } else{
+    } else {
         citySelectorField.disabled = true;
         addCityButton.disabled = true;
     }
@@ -191,55 +192,59 @@ function addCitiesToList(cities) {
 function setSelectedCityName(e) {
     selectedCityName = e.target.value;
     console.log(`selected city is: ${selectedCityName}`);
-    if (selectedCityName !== "Choose..."){
+    if (selectedCityName !== "Choose...") {
         addCityButton.disabled = false;
-    }else {addCityButton.disabled = true}
+        photoFetcher(`${selectedCityName}${selectedStateName}`) //Photo Preloader
+    } else { 
+        addCityButton.disabled = true 
+    }
 }
 
 //Get the data values for the current city
-async function getCityData () {
-        cityAlreadyExists = document.querySelectorAll(`div[cityName = "${selectedCityName}"]`) ;
-        if (cityAlreadyExists.length === 0){
-            let resCity = await fetch(`${baseURL}city?city=${selectedCityName}&state=${selectedStateName}&country=USA&key=${apiKey}`);
-            cityData = await resCity.json();
-            createCityDataCard(cityData);
-            
-        } else {
-            errorDisplayBar(`You have already added ${selectedCityName}, ${selectedStateName} to your dashboard!`)
-            // alert("You've already added this city to your dashboard!")
-        }
+async function getCityData() {
+    cityAlreadyExists = document.querySelectorAll(`div[cityName = "${selectedCityName}"]`);
+    if (cityAlreadyExists.length === 0) {
+        let resCity = await fetch(`${baseURL}city?city=${selectedCityName}&state=${selectedStateName}&country=USA&key=${apiKey}`);
+        cityData = await resCity.json();
+        createCityDataCard(cityData);
+
+    } else {
+        errorDisplayBar(`You have already added ${selectedCityName}, ${selectedStateName} to your dashboard!`)
+        // alert("You've already added this city to your dashboard!")
+    }
 }
 
 //Initialize a function to remove a card when the remove card button is clicked
-function removeCard (e){
+function removeCard(e) {
     let currentCard = e.target.parentNode.parentNode.parentNode.parentNode;
     let cardsContainer = e.target.parentNode.parentNode.parentNode.parentNode.parentNode;
     currentCard.style.opacity = '0';
-    setTimeout(function(){cardsContainer.removeChild(currentCard)}, 500)
+    setTimeout(function () { cardsContainer.removeChild(currentCard) }, 500)
     console.log(`Remove Card Has Been Triggered for ${currentCard.firstChild}`);
     console.log(currentCard.firstChild);
 }
 
-async function createCityDataCard(n){
-    let fetchedPhoto = await photoFetcher(`${selectedCityName}${selectedStateName}`);
+async function createCityDataCard(n) {
+    // let fetchedPhoto = await photoFetcher(`${selectedCityName}${selectedStateName}`);
+    
     //Create the container for each card
     let cityCardContainer = document.createElement('div');
     cityCardContainer.className = "col-xl-6";
     //Set up transition properties
     cityCardContainer.style.transitionDuration = "700ms";
-    cityCardContainer.style.transitionProperty ="opacity"
-    cityCardContainer.style.opacity="0" ;
+    cityCardContainer.style.transitionProperty = "opacity"
+    cityCardContainer.style.opacity = "0";
 
     //Create the outer card for the city
     let cityCard = document.createElement('div');
     cityCard.className = "row card-custom mx-auto h-100";
-    if(document.body.classList.contains("dark-theme")){
+    if (document.body.classList.contains("dark-theme")) {
         cityCard.classList.toggle("dark-theme")
     }
 
     //Set custom dom attributes for city and state to reference on events.  These are used to easily access the cards from anywhere in the file using query selector using a query like this document.querySelectorAll(`div[cityName = "${selectedCityName}"]`
-    cityCard.setAttribute("stateName", "" + n.data.state + "") ;
-    cityCard.setAttribute("cityName", "" + n.data.city + "") ;
+    cityCard.setAttribute("stateName", "" + n.data.state + "");
+    cityCard.setAttribute("cityName", "" + n.data.city + "");
 
     //Create main left column
     let cityCardColA = document.createElement('div');
@@ -260,30 +265,32 @@ async function createCityDataCard(n){
     let cityCardColB1 = document.createElement('div');
     cityCardColB1.className = "card-image-container";
 
-    cityCardColB1.setAttribute("style", "background-image: url("+ fetchedPhoto +")")
-
-    if(fetchedPhoto.includes("no-image-avail")){
+    cityCardColB1.setAttribute("style", "background-image: url(" + selectedCityPhoto + ")")
+    console.log(selectedCityPhoto)
+    if (selectedCityPhoto === undefined) {
         cityCardColB1.setAttribute("style", "background-size: contain")
-    } 
+    }
+        
+
     //Create Remove Card Button
     let removeCardButton = document.createElement('button');
     removeCardButton.className = "btn btn-secondary remove-card";
     removeCardButtons = document.getElementsByClassName("remove-card")
-    if(document.body.classList.contains("dark-theme")){
+    if (document.body.classList.contains("dark-theme")) {
         removeCardButton.classList.toggle("dark-theme")
     }
-    
+
 
     //Append card to static dom element
     mainCardsContainer.prepend(cityCardContainer);
-        cityCardContainer.appendChild(cityCard);
-            cityCard.appendChild(cityCardColA);
-                cityCardColA.appendChild(cityCardColA1);
-                cityCardColA.appendChild(cityCardColA2);
-                    cityCardColA2.appendChild(cityCardColA2A);
-            cityCard.appendChild(cityCardColB);
-                cityCardColB.appendChild(cityCardColB1);
-                    cityCardColB1.appendChild(removeCardButton);
+    cityCardContainer.appendChild(cityCard);
+    cityCard.appendChild(cityCardColA);
+    cityCardColA.appendChild(cityCardColA1);
+    cityCardColA.appendChild(cityCardColA2);
+    cityCardColA2.appendChild(cityCardColA2A);
+    cityCard.appendChild(cityCardColB);
+    cityCardColB.appendChild(cityCardColB1);
+    cityCardColB1.appendChild(removeCardButton);
 
     //Create an onclick trigger for this card
     removeCardButton.onclick = removeCard;
@@ -291,7 +298,7 @@ async function createCityDataCard(n){
     //Initialize data points array
     let weatherDataArray = [];
     class weatherDataObject {
-        constructor (abbrev, name, dataPoint, percentString, city, state) {
+        constructor(abbrev, name, dataPoint, percentString, city, state) {
             this.abbrev = abbrev;
             this.name = name;
             this.dataPoint = dataPoint;
@@ -303,26 +310,26 @@ async function createCityDataCard(n){
 
     //Process AQI Data (Air Quality Index)
     let aqi = (n.data.current.pollution.aqius).toFixed(1);
-    let aqiPercent = Math.floor((aqi/150) * 100);
+    let aqiPercent = Math.floor((aqi / 150) * 100);
     let aqiPercentString = `${aqiPercent}%`;
     weatherDataArray.push(new weatherDataObject("aqi", "Air Quality Index", aqi, aqiPercentString));
 
     //Process Temp Data
-    let tempFar = (((n.data.current.weather.tp) * (9/5)) + 32).toFixed(1) ;
-    let tempFarPercent = Math.floor((tempFar/110) * 100);
-    let tempFarPercentString= `${tempFarPercent}%`
+    let tempFar = (((n.data.current.weather.tp) * (9 / 5)) + 32).toFixed(1);
+    let tempFarPercent = Math.floor((tempFar / 110) * 100);
+    let tempFarPercentString = `${tempFarPercent}%`
     weatherDataArray.push(new weatherDataObject("temp", "Temp (F)", tempFar, tempFarPercentString));
 
     //Process Humidity Data
-    let humidity = n.data.current.weather.hu ;
-    let humidityString = `${humidity}%` ;
-    weatherDataArray.push(new weatherDataObject ("humidity", "Humidity", humidity, humidityString));
+    let humidity = n.data.current.weather.hu;
+    let humidityString = `${humidity}%`;
+    weatherDataArray.push(new weatherDataObject("humidity", "Humidity", humidity, humidityString));
 
     //Process Wind Speed Data
-    let windSpeed = n.data.current.weather.ws ;
-    let windSpeedPercent = Math.floor((windSpeed/50) * 100);
+    let windSpeed = n.data.current.weather.ws;
+    let windSpeedPercent = Math.floor((windSpeed / 50) * 100);
     let windSpeedString = `${windSpeedPercent}%`;
-    weatherDataArray.push(new weatherDataObject ("windSpeed", "Wind Speed", windSpeed, windSpeedString));
+    weatherDataArray.push(new weatherDataObject("windSpeed", "Wind Speed", windSpeed, windSpeedString));
 
     //Iterate through data and create dom elements
 
@@ -334,7 +341,7 @@ async function createCityDataCard(n){
             outerDataBox.className = "col p-0 temperature-box";
         } else if (weatherDataObject.abbrev == "humidity") {
             outerDataBox.className = "col p-0 humidity-box";
-        } else if (weatherDataObject.abbrev == "windSpeed"){
+        } else if (weatherDataObject.abbrev == "windSpeed") {
             outerDataBox.className = "col p-0 wind-box";
         }
         //Create Data flex box
@@ -355,16 +362,16 @@ async function createCityDataCard(n){
         let dataBarContainer = document.createElement('div');
         dataBarContainer.className = "visual-bar-container";
         let dataBarInner = document.createElement('div');
-        dataBarInner.className = "visual-bar-inside" 
-        
+        dataBarInner.className = "visual-bar-inside"
+
         //Assign custom color classes
-        dataColorClass = (weatherDataObject.abbrev == "aqi"?"aqi"
-                        : weatherDataObject.abbrev == "temp"?"temperature"
-                        : weatherDataObject.abbrev == "humidity"?"humidity"
-                        : "windSpeed")
-        dataBarInner.classList.add(dataColorClass) ;
+        dataColorClass = (weatherDataObject.abbrev == "aqi" ? "aqi"
+            : weatherDataObject.abbrev == "temp" ? "temperature"
+                : weatherDataObject.abbrev == "humidity" ? "humidity"
+                    : "windSpeed")
+        dataBarInner.classList.add(dataColorClass);
         dataBarInner.style.height = `${weatherDataObject.percentString}`;
-        
+
         let dataCircleOuterContainer = document.createElement('div');
         dataCircleOuterContainer.className = "col-xs py-2 px-0";
         let dataCircle = document.createElement('div');
@@ -375,35 +382,67 @@ async function createCityDataCard(n){
         dataText.classList.add(dataColorClass);
 
         //Add all the dom elements to the page
-        cityCardColA2A.appendChild (outerDataBox);
-            outerDataBox.appendChild(innerDataFlex);
-                innerDataFlex.appendChild(dataHeader);
-                innerDataFlex.appendChild(dataVisualContainer);
-                    dataVisualContainer.appendChild(dataBarOuterContainer);
-                        dataBarOuterContainer.appendChild(dataBarContainer);
-                            dataBarContainer.appendChild(dataBarInner);
-                    dataVisualContainer.appendChild(dataCircleOuterContainer);
-                        dataCircleOuterContainer.appendChild(dataCircle);
-                            dataCircle.appendChild(dataText);
-            
+        cityCardColA2A.appendChild(outerDataBox);
+        outerDataBox.appendChild(innerDataFlex);
+        innerDataFlex.appendChild(dataHeader);
+        innerDataFlex.appendChild(dataVisualContainer);
+        dataVisualContainer.appendChild(dataBarOuterContainer);
+        dataBarOuterContainer.appendChild(dataBarContainer);
+        dataBarContainer.appendChild(dataBarInner);
+        dataVisualContainer.appendChild(dataCircleOuterContainer);
+        dataCircleOuterContainer.appendChild(dataCircle);
+        dataCircle.appendChild(dataText);
+
         //Fade In the Card
-        setTimeout(() => cityCardContainer.style.opacity="1", 50) ;
+        setTimeout(() => cityCardContainer.style.opacity = "1", 50);
     });
 }
 
 //Get search for cities by name and then fetch a photo if one exists
 
 async function photoFetcher (citySearch) {
-    let fetchedPhoto
+
+    let fetchedPhoto = "assets/no-image-avail.svg"
     let removeSpaces = await citySearch.replace(/\s+/g, '') ;
+
+    let tempMapDiv = document.createElement('div');
+
+    let map = new google.maps.Map(tempMapDiv);
+
+    let request = {
+        query: removeSpaces,
+        fields: ['name', 'place_id', 'photos'],
+    };
+
+    let service = await new google.maps.places.PlacesService(map);
+
+    await service.findPlaceFromQuery(request, function (results, status) {
+        let placePhotoUrl
+        if (status === google.maps.places.PlacesServiceStatus.OK) {
+            console.log(results);
+            placePhotoUrl = results[0].photos[0].getUrl();
+            console.log(placePhotoUrl);
+            fetchedPhoto = placePhotoUrl;
+            selectedCityPhoto = placePhotoUrl;
+        }
+    }
+    )
+}
+
+
+// Leaving this in for educational purposes.  This works EXCEPT it violates cors policy with the Google Maps, API since  which only allow the method below for server side requests.  Replaced this method with their 'javascript' client side method.
+/*
+async function photoFetcherOld(citySearch) {
+    let fetchedPhoto
+    let removeSpaces = await citySearch.replace(/\s+/g, '');
     let results = await fetch(`https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=${removeSpaces}&inputtype=textquery&fields=photos&key=${gPlaceApiKey}`)
 
     let resultsJson = await results.json();
-    if (resultsJson.candidates.length > 0 
-        && resultsJson.status === "OK" 
+    if (resultsJson.candidates.length > 0
+        && resultsJson.status === "OK"
         && resultsJson.candidates[0].hasOwnProperty("photos")) {
-        let photoReference = await resultsJson.candidates[0]["photos"][0]["photo_reference"] ;
-    
+        let photoReference = await resultsJson.candidates[0]["photos"][0]["photo_reference"];
+
         let photoResult = await fetch(`https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${photoReference}&key=${gPlaceApiKey}`)
         fetchedPhoto = photoResult.url;
     } else {
@@ -411,8 +450,8 @@ async function photoFetcher (citySearch) {
         fetchedPhoto = "/assets/no-image-avail.svg"
     }
     return fetchedPhoto;
-    
-}
 
+}
+*/
 
 
