@@ -26,3 +26,8 @@ This project uses data and images from 2 APIs to dynamically generate cards with
 ### Takaways
 - Bootstrap is effective at quickly creating a responsive framework, however when used for dynamic dom element creation in JS, the Bootstrap classes can make the dom element creation hard to parse for the human eye.
 - Sometimes the 'small adjustments' at the end take longer than expected.
+
+### Potential Fixes
+- It would possibly be better to re-design the app so selected city and selected state are not global variables.
+- Split some functions into smaller sub functions.
+- Figure out if it possible to transform the photo url fetch into a promise.  The Google Places api service syntax was unfamiliar to me, so I was unable to return the necessary data as a promise.
