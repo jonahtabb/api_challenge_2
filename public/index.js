@@ -3,6 +3,64 @@
 const baseURL = "https://api.airvisual.com/v2/"
 const apiKey = "a1d8a74d-2f39-4e75-a89f-70fa6578cbd9"
 
+//For Debugging
+//Here is a States Array that matches the fetch response for the async function 'getSupportedStates' 
+//...so development and debugging can be done without hitting rate maximums
+// Use EITHER FUNCTION (but not both) 'getSupportedStates()' or 'getSupportedStatesStandIn()'
+const supportedStatesStandIn = [
+    { state: "Alabama" },
+    { state: "Alaska" },
+    { state: "Arizona" },
+    { state: "Arkansas" },
+    { state: "California" },
+    { state: "Colorado" },
+    { state: "Connecticut" },
+    { state: "Delaware" },
+    { state: "Florida" },
+    { state: "Georgia" },
+    { state: "Hawaii" },
+    { state: "Idaho" },
+    { state: "Illinois" },
+    { state: "Indiana" },
+    { state: "Iowa" },
+    { state: "Kansas" },
+    { state: "Kentucky" },
+    { state: "Louisiana" },
+    { state: "Maine" },
+    { state: "Maryland" },
+    { state: "Massachusetts" },
+    { state: "Michigan" },
+    { state: "Minnesota" },
+    { state: "Mississippi" },
+    { state: "Missouri" },
+    { state: "Montana" },
+    { state: "Nebraska" },
+    { state: "Nevada" },
+    { state: "New Hampshire" },
+    { state: "New Jersey" },
+    { state: "New Mexico" },
+    { state: "New York" },
+    { state: "North Carolina" },
+    { state: "North Dakota" },
+    { state: "Ohio" },
+    { state: "Oklahoma" },
+    { state: "Oregon" },
+    { state: "Pennsylvania" },
+    { state: "Rhode Island" },
+    { state: "South Carolina" },
+    { state: "South Dakota" },
+    { state: "Tennessee" },
+    { state: "Texas" },
+    { state: "Utah" },
+    { state: "Vermont" },
+    { state: "Virginia" },
+    { state: "Washington" },
+    { state: "Washington, D.C." },
+    { state: "West Virginia" },
+    { state: "Wisconsin" },
+    { state: "Wyoming" }
+]
+
 //Dark Mode Toggle
 const btn = document.querySelector("#dark-theme-button");
 const staticDarkThemeElements = document.querySelectorAll(".choose-container-upper, .form-select, #add-city-button:hover, p, a, a.hover");
@@ -348,61 +406,5 @@ async function photoFetcher (citySearch) {
     )
 }
 
-//For Debugging
-//Here is a States Array that matches the fetch response for the async function 'getSupportedStates' 
-//...so development and debugging can be done without hitting rate maximums
-// See lines ~ 86-88 to activate EITHER 'getSupportedStates()' or 'getSupportedStatesStandIn()'
-const supportedStatesStandIn = [
-    { state: "Alabama" },
-    { state: "Alaska" },
-    { state: "Arizona" },
-    { state: "Arkansas" },
-    { state: "California" },
-    { state: "Colorado" },
-    { state: "Connecticut" },
-    { state: "Delaware" },
-    { state: "Florida" },
-    { state: "Georgia" },
-    { state: "Hawaii" },
-    { state: "Idaho" },
-    { state: "Illinois" },
-    { state: "Indiana" },
-    { state: "Iowa" },
-    { state: "Kansas" },
-    { state: "Kentucky" },
-    { state: "Louisiana" },
-    { state: "Maine" },
-    { state: "Maryland" },
-    { state: "Massachusetts" },
-    { state: "Michigan" },
-    { state: "Minnesota" },
-    { state: "Mississippi" },
-    { state: "Missouri" },
-    { state: "Montana" },
-    { state: "Nebraska" },
-    { state: "Nevada" },
-    { state: "New Hampshire" },
-    { state: "New Jersey" },
-    { state: "New Mexico" },
-    { state: "New York" },
-    { state: "North Carolina" },
-    { state: "North Dakota" },
-    { state: "Ohio" },
-    { state: "Oklahoma" },
-    { state: "Oregon" },
-    { state: "Pennsylvania" },
-    { state: "Rhode Island" },
-    { state: "South Carolina" },
-    { state: "South Dakota" },
-    { state: "Tennessee" },
-    { state: "Texas" },
-    { state: "Utah" },
-    { state: "Vermont" },
-    { state: "Virginia" },
-    { state: "Washington" },
-    { state: "Washington, D.C." },
-    { state: "West Virginia" },
-    { state: "Wisconsin" },
-    { state: "Wyoming" }
-]
+
 
